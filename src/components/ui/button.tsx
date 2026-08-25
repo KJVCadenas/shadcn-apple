@@ -12,15 +12,15 @@ const buttonVariants = cva(
     "outline-none",
 
     /* macOS 27 Figma geometry */
-    "h-[var(--button-height)]",
-    "px-[var(--button-padding-x)]",
-    "rounded-[var(--button-radius)]",
+    "h-(--button-height)",
+    "px-(--button-padding-x)",
+    "rounded-(--button-radius)",
 
     /* macOS 27 Figma typography */
     "font-sans",
-    "text-[var(--button-font-size)]",
-    "leading-[var(--button-line-height)]",
-    "font-[var(--button-font-weight)]",
+    "text-(length:--button-font-size)",
+    "leading-(--button-line-height)",
+    "font-(--button-font-weight)",
 
     /* Desktop cursor behavior */
     "cursor-default",
@@ -42,10 +42,10 @@ const buttonVariants = cva(
       variant: {
         /* macOS: Bordered - Prominent (Default) */
         default: [
-          "bg-[var(--macos-blue)]",
+          "bg-(--macos-blue)",
           "text-white",
 
-          "active:bg-[var(--macos-blue-pressed)]",
+          "active:bg-(--macos-blue-pressed)",
 
           "disabled:bg-[color-mix(in_srgb,var(--macos-blue)_40%,transparent)]",
           "disabled:text-white/50",
@@ -59,42 +59,42 @@ const buttonVariants = cva(
          * Disabled = 4%
          */
         secondary: [
-          "bg-[var(--button-neutral-idle)]",
-          "text-[var(--label-primary)]",
+          "bg-(--button-neutral-idle)",
+          "text-(--label-primary)",
 
-          "active:bg-[var(--button-neutral-pressed)]",
+          "active:bg-(--button-neutral-pressed)",
 
-          "disabled:bg-[var(--button-neutral-disabled)]",
-          "disabled:text-[var(--label-tertiary)]",
+          "disabled:bg-(--button-neutral-disabled)",
+          "disabled:text-(--label-tertiary)",
         ],
 
         /* macOS: Bordered - Tinted */
         outline: [
-          "bg-[var(--button-blue-tint-idle)]",
-          "text-[var(--macos-blue)]",
+          "bg-(--button-blue-tint-idle)",
+          "text-(--macos-blue)",
 
-          "active:bg-[var(--button-blue-tint-pressed)]",
+          "active:bg-(--button-blue-tint-pressed)",
 
-          "disabled:bg-[var(--button-blue-tint-disabled)]",
+          "disabled:bg-(--button-blue-tint-disabled)",
           "disabled:text-[color-mix(in_srgb,var(--macos-blue)_40%,transparent)]",
         ],
 
         /* macOS: Borderless */
         ghost: [
           "bg-transparent",
-          "text-[var(--macos-blue)]",
+          "text-(--macos-blue)",
 
-          "active:text-[var(--macos-blue-pressed)]",
+          "active:text-(--macos-blue-pressed)",
 
           "disabled:text-[color-mix(in_srgb,var(--macos-blue)_50%,transparent)]",
         ],
 
         /* macOS: Bordered - Prominent Destructive */
         destructive: [
-          "bg-[var(--macos-red)]",
+          "bg-(--macos-red)",
           "text-white",
 
-          "active:bg-[var(--macos-red-pressed)]",
+          "active:bg-(--macos-red-pressed)",
 
           "disabled:bg-[color-mix(in_srgb,var(--macos-red)_40%,transparent)]",
           "disabled:text-white/50",
@@ -102,12 +102,12 @@ const buttonVariants = cva(
 
         /* macOS: Bordered - Destructive */
         "destructive-outline": [
-          "bg-[var(--button-red-tint-idle)]",
-          "text-[var(--macos-red)]",
+          "bg-(--button-red-tint-idle)",
+          "text-(--macos-red)",
 
-          "active:bg-[var(--button-red-tint-pressed)]",
+          "active:bg-(--button-red-tint-pressed)",
 
-          "disabled:bg-[var(--button-red-tint-disabled)]",
+          "disabled:bg-(--button-red-tint-disabled)",
           "disabled:text-[color-mix(in_srgb,var(--macos-red)_40%,transparent)]",
         ],
 
@@ -118,9 +118,9 @@ const buttonVariants = cva(
         link: [
           "h-auto px-0 rounded-none",
           "bg-transparent",
-          "text-[var(--macos-blue)]",
+          "text-(--macos-blue)",
 
-          "active:text-[var(--macos-blue-pressed)]",
+          "active:text-(--macos-blue-pressed)",
 
           "disabled:text-[color-mix(in_srgb,var(--macos-blue)_50%,transparent)]",
         ],
@@ -154,22 +154,22 @@ const buttonVariants = cva(
          * is reviewed separately.
          */
         icon: [
-          "size-[var(--button-height)]",
+          "size-(--button-height)",
           "px-0",
         ],
 
         "icon-xs": [
-          "size-[var(--button-height)]",
+          "size-(--button-height)",
           "px-0",
         ],
 
         "icon-sm": [
-          "size-[var(--button-height)]",
+          "size-(--button-height)",
           "px-0",
         ],
 
         "icon-lg": [
-          "size-[var(--button-height)]",
+          "size-(--button-height)",
           "px-0",
         ],
       },

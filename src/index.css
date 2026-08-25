@@ -245,6 +245,37 @@
 
   --button-red-tint-disabled:
     color-mix(in srgb, var(--macos-red) 10%, transparent);
+
+  /* ----------------------------------------------------------
+     TEXT FIELD — exact linked Figma geometry and states
+     ---------------------------------------------------------- */
+
+  --text-field-height: 24px;
+  --text-field-inset-left: 8px;
+  --text-field-inset-right: 8px;
+  --text-field-radius: 6px;
+
+  --text-field-font-size: 13px;
+  --text-field-line-height: 16px;
+  --text-field-font-weight: 510;
+
+  --text-field-stroke-width: 1px;
+  --text-field-focus-ring-width: 3.5px;
+
+  --text-field-fill: #ffffff;
+  --text-field-stroke: rgb(0 0 0 / 8%);
+
+  --text-field-fill-disabled:
+    color-mix(in srgb, var(--text-field-fill) 50%, transparent);
+
+  --text-field-stroke-disabled:
+    color-mix(in srgb, var(--text-field-stroke) 50%, transparent);
+
+  --text-field-focus-ring:
+    color-mix(in srgb, var(--macos-blue) 50%, transparent);
+
+  --text-field-focus-ring-invalid:
+    color-mix(in srgb, var(--macos-red) 50%, transparent);
 }
 
 /* ============================================================
@@ -331,6 +362,10 @@
   --button-neutral-idle: rgb(255 255 255 / 8%);
   --button-neutral-pressed: rgb(255 255 255 / 16%);
   --button-neutral-disabled: rgb(255 255 255 / 4%);
+
+  /* Text field semantic colors resolve through dark-mode fills. */
+  --text-field-fill: var(--fill-primary);
+  --text-field-stroke: var(--label-quaternary);
 }
 
 /* ============================================================
