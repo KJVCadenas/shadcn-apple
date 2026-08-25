@@ -1,5 +1,5 @@
 {
-  "name": "shacn-apple",
+  "name": "shadcn-apple",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -25,15 +27,27 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
+    "@chromatic-com/storybook": "latest",
     "@rolldown/plugin-babel": "^0.2.3",
+    "@storybook/addon-a11y": "^10.5.10",
+    "@storybook/addon-docs": "^10.5.10",
+    "@storybook/addon-onboarding": "^10.5.10",
+    "@storybook/addon-themes": "^10.5.10",
+    "@storybook/addon-vitest": "^10.5.10",
+    "@storybook/react-vite": "^10.5.10",
     "@types/babel__core": "^7.20.5",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.1.0",
+    "@vitest/browser-playwright": "latest",
+    "@vitest/coverage-v8": "latest",
     "babel-plugin-react-compiler": "^1.0.0",
     "oxlint": "^1.79.0",
+    "playwright": "latest",
+    "storybook": "^10.5.10",
     "typescript": "~6.0.2",
-    "vite": "^8.2.2"
+    "vite": "^8.2.2",
+    "vitest": "latest"
   }
 }

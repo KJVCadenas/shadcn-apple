@@ -4,33 +4,177 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-none border border-transparent bg-clip-padding text-xs font-medium whitespace-nowrap transition-all outline-none select-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  [
+    "group/button",
+    "inline-flex w-fit shrink-0 items-center justify-center",
+    "appearance-none border-0",
+    "whitespace-nowrap select-none",
+    "outline-none",
+
+    /* macOS 27 Figma geometry */
+    "h-[var(--button-height)]",
+    "px-[var(--button-padding-x)]",
+    "rounded-[var(--button-radius)]",
+
+    /* macOS 27 Figma typography */
+    "font-sans",
+    "text-[var(--button-font-size)]",
+    "leading-[var(--button-line-height)]",
+    "font-[var(--button-font-weight)]",
+
+    /* Desktop cursor behavior */
+    "cursor-default",
+
+    /* Accessibility */
+    "focus-visible:ring-[3px]",
+    "focus-visible:ring-[color-mix(in_srgb,var(--macos-blue)_35%,transparent)]",
+    "focus-visible:ring-offset-1",
+
+    /* Disabled */
+    "disabled:pointer-events-none",
+
+    /* Icons */
+    "[&_svg]:pointer-events-none",
+    "[&_svg]:shrink-0",
+  ],
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/80",
-        outline:
-          "border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-        ghost:
-          "hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
-        destructive:
-          "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
-        link: "text-primary underline-offset-4 hover:underline",
+        /* macOS: Bordered - Prominent (Default) */
+        default: [
+          "bg-[var(--macos-blue)]",
+          "text-white",
+
+          "active:bg-[var(--macos-blue-pressed)]",
+
+          "disabled:bg-[color-mix(in_srgb,var(--macos-blue)_40%,transparent)]",
+          "disabled:text-white/50",
+        ],
+
+        /*
+         * macOS: Bordered
+         *
+         * Idle     = 8%
+         * Clicked  = 16%
+         * Disabled = 4%
+         */
+        secondary: [
+          "bg-[var(--button-neutral-idle)]",
+          "text-[var(--label-primary)]",
+
+          "active:bg-[var(--button-neutral-pressed)]",
+
+          "disabled:bg-[var(--button-neutral-disabled)]",
+          "disabled:text-[var(--label-tertiary)]",
+        ],
+
+        /* macOS: Bordered - Tinted */
+        outline: [
+          "bg-[var(--button-blue-tint-idle)]",
+          "text-[var(--macos-blue)]",
+
+          "active:bg-[var(--button-blue-tint-pressed)]",
+
+          "disabled:bg-[var(--button-blue-tint-disabled)]",
+          "disabled:text-[color-mix(in_srgb,var(--macos-blue)_40%,transparent)]",
+        ],
+
+        /* macOS: Borderless */
+        ghost: [
+          "bg-transparent",
+          "text-[var(--macos-blue)]",
+
+          "active:text-[var(--macos-blue-pressed)]",
+
+          "disabled:text-[color-mix(in_srgb,var(--macos-blue)_50%,transparent)]",
+        ],
+
+        /* macOS: Bordered - Prominent Destructive */
+        destructive: [
+          "bg-[var(--macos-red)]",
+          "text-white",
+
+          "active:bg-[var(--macos-red-pressed)]",
+
+          "disabled:bg-[color-mix(in_srgb,var(--macos-red)_40%,transparent)]",
+          "disabled:text-white/50",
+        ],
+
+        /* macOS: Bordered - Destructive */
+        "destructive-outline": [
+          "bg-[var(--button-red-tint-idle)]",
+          "text-[var(--macos-red)]",
+
+          "active:bg-[var(--button-red-tint-pressed)]",
+
+          "disabled:bg-[var(--button-red-tint-disabled)]",
+          "disabled:text-[color-mix(in_srgb,var(--macos-red)_40%,transparent)]",
+        ],
+
+        /*
+         * Kept for shadcn API compatibility.
+         * Apple-style text action.
+         */
+        link: [
+          "h-auto px-0 rounded-none",
+          "bg-transparent",
+          "text-[var(--macos-blue)]",
+
+          "active:text-[var(--macos-blue-pressed)]",
+
+          "disabled:text-[color-mix(in_srgb,var(--macos-blue)_50%,transparent)]",
+        ],
       },
+
       size: {
-        default:
-          "h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        xs: "h-6 gap-1 rounded-none px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-        sm: "h-7 gap-1 rounded-none px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-        lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-        icon: "size-8",
-        "icon-xs": "size-6 rounded-none [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-7 rounded-none",
-        "icon-lg": "size-9",
+        /*
+         * Figma-authenticated regular Button:
+         *
+         * Height: 24
+         * Padding X: 16
+         * Radius: 6
+         * Font: 13/16
+         *
+         * Geometry already comes from the base classes.
+         */
+        default: "",
+
+        /*
+         * Keep these aliases for compatibility for now.
+         * Do not invent alternate Apple sizes until their
+         * Figma components/tokens are reviewed.
+         */
+        xs: "",
+        sm: "",
+        lg: "",
+
+        /*
+         * Temporary icon compatibility.
+         * Replace once Apple's icon/arrow button component
+         * is reviewed separately.
+         */
+        icon: [
+          "size-[var(--button-height)]",
+          "px-0",
+        ],
+
+        "icon-xs": [
+          "size-[var(--button-height)]",
+          "px-0",
+        ],
+
+        "icon-sm": [
+          "size-[var(--button-height)]",
+          "px-0",
+        ],
+
+        "icon-lg": [
+          "size-[var(--button-height)]",
+          "px-0",
+        ],
       },
     },
+
     defaultVariants: {
       variant: "default",
       size: "default",
@@ -47,7 +191,15 @@ function Button({
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      data-variant={variant}
+      data-size={size}
+      className={cn(
+        buttonVariants({
+          variant,
+          size,
+          className,
+        })
+      )}
       {...props}
     />
   )

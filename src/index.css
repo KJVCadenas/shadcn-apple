@@ -4,9 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* =========================================================
-   SHADCN / TAILWIND BRIDGE
-   ========================================================= */
+/* ============================================================
+   SHADCN / TAILWIND TOKEN BRIDGE
+   ============================================================ */
 
 @theme inline {
   /* Typography */
@@ -14,7 +14,7 @@
   --font-heading: var(--font-system);
   --font-mono: var(--font-system-mono);
 
-  /* ShadCN semantic mappings */
+  /* Core shadcn tokens */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -50,36 +50,25 @@
   --color-sidebar-ring: var(--sidebar-ring);
 
   /*
-   * Generic Tailwind radius aliases.
-   * Exact component radii belong inside each component.
+   * Generic radius aliases only.
+   * Components should use their own Figma-authenticated radius.
    */
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
   --radius-xl: 10px;
-
-  /* macOS 27 Button */
-  --button-height: 24px;
-  --button-radius: 6px;
-  --button-padding-x: 16px;
-
-  --button-font-size: 13px;
-
-  /* Accessibility / interaction target */
-  --control-target-size: 28px;
 }
 
-/* =========================================================
-   macOS 27 DESIGN RESOURCE TOKENS
-   LIGHT
-   ========================================================= */
+/* ============================================================
+   macOS 27 — LIGHT
+   ============================================================ */
 
 :root {
   color-scheme: light;
 
-  /* ---------------------------------------------------------
+  /* ----------------------------------------------------------
      Typography
-     --------------------------------------------------------- */
+     ---------------------------------------------------------- */
 
   --font-system:
     -apple-system,
@@ -99,61 +88,32 @@
     Consolas,
     monospace;
 
-  --text-body: 13px;
-  --leading-body: 16px;
+  --font-size-body: 13px;
+  --line-height-body: 16px;
 
-  --text-callout: 12px;
-  --leading-callout: 15px;
+  /* ----------------------------------------------------------
+     macOS 27 accents
+     ---------------------------------------------------------- */
 
-  --text-subheadline: 11px;
-  --leading-subheadline: 14px;
-
-  --text-caption: 10px;
-  --leading-caption: 13px;
-
-  /* ---------------------------------------------------------
-     Control geometry
-     --------------------------------------------------------- */
-
-  --control-height-regular: 28px;
-  --control-height-small: 24px;
-  --control-height-mini: 20px;
-
-  --control-radius: 6px;
-
-  /* ---------------------------------------------------------
-     Window
-     --------------------------------------------------------- */
-
-  --macos-window-background: #ffffff;
-
-  /* ---------------------------------------------------------
-     Accent colors
-     macOS 27 Design Resource
-     --------------------------------------------------------- */
-
-  --macos-red: #ff383c;
-  --macos-orange: #ff8d28;
-  --macos-yellow: #ffcc00;
-  --macos-green: #34c759;
-  --macos-mint: #00c8b3;
-  --macos-teal: #00c3d0;
-  --macos-cyan: #00c0e8;
   --macos-blue: #0088ff;
-  --macos-indigo: #6155f5;
-  --macos-purple: #cb30e0;
+  --macos-red: #ff383c;
 
-  /* ---------------------------------------------------------
-     Grays
-     --------------------------------------------------------- */
+  /*
+   * The linked Button component resolves its clicked
+   * borderless blue to #0070D1.
+   *
+   * Deriving pressed colors from the mode-specific accent also
+   * keeps the relationship useful in dark mode.
+   */
+  --macos-blue-pressed:
+    color-mix(in srgb, var(--macos-blue) 82%, black);
 
-  --macos-black: #000000;
-  --macos-white: #ffffff;
-  --macos-gray: #8e8e93;
+  --macos-red-pressed:
+    color-mix(in srgb, var(--macos-red) 82%, black);
 
-  /* ---------------------------------------------------------
-     Labels
-     --------------------------------------------------------- */
+  /* ----------------------------------------------------------
+     Labels — exact Figma variables
+     ---------------------------------------------------------- */
 
   --label-primary: rgb(0 0 0 / 85%);
   --label-secondary: rgb(0 0 0 / 50%);
@@ -161,21 +121,10 @@
   --label-quaternary: rgb(0 0 0 / 10%);
   --label-quinary: rgb(0 0 0 / 5%);
   --label-seximal: rgb(0 0 0 / 3%);
-  --label-white: #ffffff;
 
-  /* ---------------------------------------------------------
-     Labels — Vibrant
-     --------------------------------------------------------- */
-
-  --label-vibrant-primary: #1a1a1a;
-  --label-vibrant-secondary: #727272;
-  --label-vibrant-tertiary: #bfbfbf;
-  --label-vibrant-quaternary: #d9d9d9;
-  --label-vibrant-quinary: #e6e6e6;
-
-  /* ---------------------------------------------------------
-     Fills — Opaque
-     --------------------------------------------------------- */
+  /* ----------------------------------------------------------
+     Opaque fills — exact Figma variables
+     ---------------------------------------------------------- */
 
   --fill-primary: rgb(0 0 0 / 10%);
   --fill-secondary: rgb(0 0 0 / 8%);
@@ -183,50 +132,35 @@
   --fill-quaternary: rgb(0 0 0 / 3%);
   --fill-quinary: rgb(0 0 0 / 2%);
 
-  /* ---------------------------------------------------------
-     Fills — Vibrant
-     --------------------------------------------------------- */
+  /* ----------------------------------------------------------
+     Vibrant fills
+     Static colors only — NO glass/blur implementation.
+     ---------------------------------------------------------- */
 
   --fill-vibrant-primary: #d9d9d9;
   --fill-vibrant-secondary: #e6e6e6;
   --fill-vibrant-tertiary: #f2f2f2;
 
-  /* ---------------------------------------------------------
-     Miscellaneous
-     --------------------------------------------------------- */
+  /* ----------------------------------------------------------
+     Window / surfaces
+     ---------------------------------------------------------- */
 
-  --scrollbar: rgb(0 0 0 / 50%);
+  --window-background: #ffffff;
 
-  --alert-overlay: rgb(171 171 171 / 60%);
-
-  --sidebar-label-inactive: #878787;
-
-  --table-row-alternating: rgb(0 0 0 / 5%);
-  --table-selected-active: #0165e2;
-  --table-selected-inactive: rgb(0 0 0 / 14%);
-  --table-column-separator: rgb(0 0 0 / 10%);
-
-  /* ---------------------------------------------------------
-     SHADCN COMPATIBILITY MAPPING
-     --------------------------------------------------------- */
-
-  --background: var(--macos-window-background);
+  --background: var(--window-background);
   --foreground: var(--label-primary);
 
-  --popover: var(--macos-window-background);
+  --popover: var(--window-background);
   --popover-foreground: var(--label-primary);
 
-  /*
-   * Primary = macOS accent.
-   */
+  /* ----------------------------------------------------------
+     ShadCN compatibility aliases
+     ---------------------------------------------------------- */
+
   --primary: var(--macos-blue);
   --primary-foreground: #ffffff;
 
-  /*
-   * Standard secondary controls use system fills,
-   * rather than a solid gray web-button color.
-   */
-  --secondary: var(--fill-primary);
+  --secondary: var(--fill-secondary);
   --secondary-foreground: var(--label-primary);
 
   --muted: var(--fill-tertiary);
@@ -241,8 +175,13 @@
   --input: var(--label-quaternary);
   --ring: var(--macos-blue);
 
-  /* Sidebar */
-  --sidebar: var(--fill-vibrant-tertiary);
+  /* ----------------------------------------------------------
+     Sidebar — provisional aliases
+     Exact geometry/colors should come from the Sidebar node
+     when that component is transferred.
+     ---------------------------------------------------------- */
+
+  --sidebar: var(--window-background);
   --sidebar-foreground: var(--label-primary);
 
   --sidebar-primary: var(--macos-blue);
@@ -253,34 +192,76 @@
 
   --sidebar-border: var(--label-quaternary);
   --sidebar-ring: var(--macos-blue);
+
+  --sidebar-label-inactive: #878787;
+
+  /* ----------------------------------------------------------
+     Alert / Dialog
+     ---------------------------------------------------------- */
+
+  --alert-overlay: rgb(171 171 171 / 60%);
+
+  /* ----------------------------------------------------------
+     BUTTON — exact linked Figma geometry
+     ---------------------------------------------------------- */
+
+  --button-height: 24px;
+  --button-padding-x: 16px;
+  --button-radius: 6px;
+
+  --button-font-size: 13px;
+  --button-line-height: 16px;
+  --button-font-weight: 510;
+
+  /*
+   * Bordered states from linked Figma component.
+   */
+  --button-neutral-idle: rgb(0 0 0 / 8%);
+  --button-neutral-pressed: rgb(0 0 0 / 16%);
+  --button-neutral-disabled: rgb(0 0 0 / 4%);
+
+  /*
+   * Tinted states from linked Figma component:
+   * Idle 20%, Clicked 28%, Disabled 12%.
+   */
+  --button-blue-tint-idle:
+    color-mix(in srgb, var(--macos-blue) 20%, transparent);
+
+  --button-blue-tint-pressed:
+    color-mix(in srgb, var(--macos-blue) 28%, transparent);
+
+  --button-blue-tint-disabled:
+    color-mix(in srgb, var(--macos-blue) 12%, transparent);
+
+  /*
+   * Destructive bordered:
+   * Idle 20%, Clicked 28%, Disabled 10%.
+   */
+  --button-red-tint-idle:
+    color-mix(in srgb, var(--macos-red) 20%, transparent);
+
+  --button-red-tint-pressed:
+    color-mix(in srgb, var(--macos-red) 28%, transparent);
+
+  --button-red-tint-disabled:
+    color-mix(in srgb, var(--macos-red) 10%, transparent);
 }
 
-/* =========================================================
-   macOS 27 DESIGN RESOURCE TOKENS
-   DARK
-   ========================================================= */
+/* ============================================================
+   macOS 27 — DARK
+   ============================================================ */
 
 .dark {
   color-scheme: dark;
 
-  --macos-window-background: #1e1e1e;
-
-  /* Accents */
-  --macos-red: #ff4245;
-  --macos-orange: #ff9230;
-  --macos-yellow: #ffd600;
-  --macos-green: #30d158;
-  --macos-mint: #00dac3;
-  --macos-teal: #00d2e0;
-  --macos-cyan: #3cd3fe;
   --macos-blue: #0091ff;
-  --macos-indigo: #6d7cff;
-  --macos-purple: #db34f2;
+  --macos-red: #ff4245;
 
-  /* Grays */
-  --macos-black: #000000;
-  --macos-white: #ffffff;
-  --macos-gray: #98989f;
+  --macos-blue-pressed:
+    color-mix(in srgb, var(--macos-blue) 82%, black);
+
+  --macos-red-pressed:
+    color-mix(in srgb, var(--macos-red) 82%, black);
 
   /* Labels */
   --label-primary: rgb(255 255 255 / 85%);
@@ -289,51 +270,33 @@
   --label-quaternary: rgb(255 255 255 / 10%);
   --label-quinary: rgb(255 255 255 / 5%);
   --label-seximal: rgb(255 255 255 / 3%);
-  --label-white: #ffffff;
 
-  /* Labels — Vibrant */
-  --label-vibrant-primary: #f5f5f5;
-  --label-vibrant-secondary: #8a8a8a;
-  --label-vibrant-tertiary: #404040;
-  --label-vibrant-quaternary: #262626;
-  --label-vibrant-quinary: #111111;
-
-  /* Fills — Opaque */
+  /* Opaque fills */
   --fill-primary: rgb(255 255 255 / 10%);
   --fill-secondary: rgb(255 255 255 / 8%);
   --fill-tertiary: rgb(255 255 255 / 5%);
   --fill-quaternary: rgb(255 255 255 / 3%);
   --fill-quinary: rgb(255 255 255 / 2%);
 
-  /* Fills — Vibrant */
+  /* Vibrant fills */
   --fill-vibrant-primary: #242424;
   --fill-vibrant-secondary: #141414;
   --fill-vibrant-tertiary: #0d0d0d;
 
-  /* Misc */
-  --scrollbar: rgb(255 255 255 / 55%);
+  /* Window */
+  --window-background: #1e1e1e;
 
-  --alert-overlay: rgb(23 23 23 / 62%);
-
-  --sidebar-label-inactive: #666666;
-
-  --table-row-alternating: rgb(255 255 255 / 5%);
-  --table-selected-active: #0158d2;
-  --table-selected-inactive: rgb(255 255 255 / 18%);
-  --table-column-separator: rgb(255 255 255 / 10%);
-
-  /* ShadCN aliases */
-
-  --background: var(--macos-window-background);
+  --background: var(--window-background);
   --foreground: var(--label-primary);
 
-  --popover: var(--macos-window-background);
+  --popover: var(--window-background);
   --popover-foreground: var(--label-primary);
 
+  /* ShadCN aliases */
   --primary: var(--macos-blue);
   --primary-foreground: #ffffff;
 
-  --secondary: var(--fill-primary);
+  --secondary: var(--fill-secondary);
   --secondary-foreground: var(--label-primary);
 
   --muted: var(--fill-tertiary);
@@ -348,7 +311,7 @@
   --input: var(--label-quaternary);
   --ring: var(--macos-blue);
 
-  --sidebar: var(--fill-vibrant-primary);
+  --sidebar: var(--window-background);
   --sidebar-foreground: var(--label-primary);
 
   --sidebar-primary: var(--macos-blue);
@@ -359,22 +322,31 @@
 
   --sidebar-border: var(--label-quaternary);
   --sidebar-ring: var(--macos-blue);
+
+  --sidebar-label-inactive: #666666;
+
+  --alert-overlay: rgb(23 23 23 / 62%);
+
+  /* Button neutrals invert in dark mode */
+  --button-neutral-idle: rgb(255 255 255 / 8%);
+  --button-neutral-pressed: rgb(255 255 255 / 16%);
+  --button-neutral-disabled: rgb(255 255 255 / 4%);
 }
 
-/* =========================================================
+/* ============================================================
    BASE
-   ========================================================= */
+   ============================================================ */
 
 @layer base {
   * {
-    @apply border-border;
     box-sizing: border-box;
+    @apply border-border;
   }
 
   html {
     font-family: var(--font-system);
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -391,8 +363,8 @@
     @apply bg-background text-foreground;
 
     font-family: var(--font-system);
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
+    font-size: var(--font-size-body);
+    line-height: var(--line-height-body);
   }
 
   button,
@@ -403,20 +375,58 @@
   }
 
   ::selection {
-    background: color-mix(
-      in srgb,
-      var(--macos-blue) 30%,
-      transparent
-    );
+    background:
+      color-mix(in srgb, var(--macos-blue) 30%, transparent);
+  }
+}
+
+/* ============================================================
+   INACTIVE WINDOW
+
+   Figma's "Active=False" is window/activity state, NOT the
+   button's pressed state.
+
+   Your Tauri layer can later toggle:
+
+   <html data-window-active="true">
+   <html data-window-active="false">
+
+   ============================================================ */
+
+@layer components {
+  html[data-window-active="false"]
+    [data-slot="button"]:is(
+      [data-variant="default"],
+      [data-variant="secondary"],
+      [data-variant="outline"],
+      [data-variant="destructive"],
+      [data-variant="destructive-outline"]
+    ) {
+    background: var(--button-neutral-idle);
+    color: var(--label-primary);
   }
 
-  :focus-visible {
-    outline: 3px solid color-mix(
-      in srgb,
-      var(--macos-blue) 45%,
-      transparent
-    );
+  html[data-window-active="false"]
+    [data-slot="button"]:is(
+      [data-variant="default"],
+      [data-variant="secondary"],
+      [data-variant="outline"],
+      [data-variant="destructive"],
+      [data-variant="destructive-outline"]
+    ):active:not(:disabled) {
+    background: var(--button-neutral-pressed);
+    color: var(--label-primary);
+  }
 
-    outline-offset: 1px;
+  html[data-window-active="false"]
+    [data-slot="button"]:is(
+      [data-variant="default"],
+      [data-variant="secondary"],
+      [data-variant="outline"],
+      [data-variant="destructive"],
+      [data-variant="destructive-outline"]
+    ):disabled {
+    background: var(--button-neutral-disabled);
+    color: var(--label-tertiary);
   }
 }
