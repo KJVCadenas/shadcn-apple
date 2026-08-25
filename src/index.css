@@ -1,130 +1,422 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/jetbrains-mono";
 
 @custom-variant dark (&:is(.dark *));
 
+/* =========================================================
+   SHADCN / TAILWIND BRIDGE
+   ========================================================= */
+
 @theme inline {
-    --font-heading: var(--font-mono);
-    --font-mono: 'JetBrains Mono Variable', monospace;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --color-foreground: var(--foreground);
-    --color-background: var(--background);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+  /* Typography */
+  --font-sans: var(--font-system);
+  --font-heading: var(--font-system);
+  --font-mono: var(--font-system-mono);
+
+  /* ShadCN semantic mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /*
+   * Generic Tailwind radius aliases.
+   * Exact component radii belong inside each component.
+   */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 10px;
+
+  /* macOS 27 Button */
+  --button-height: 24px;
+  --button-radius: 6px;
+  --button-padding-x: 16px;
+
+  --button-font-size: 13px;
+
+  /* Accessibility / interaction target */
+  --control-target-size: 28px;
 }
+
+/* =========================================================
+   macOS 27 DESIGN RESOURCE TOKENS
+   LIGHT
+   ========================================================= */
 
 :root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+  color-scheme: light;
+
+  /* ---------------------------------------------------------
+     Typography
+     --------------------------------------------------------- */
+
+  --font-system:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "SF Pro Display",
+    "Helvetica Neue",
+    "Segoe UI",
+    system-ui,
+    sans-serif;
+
+  --font-system-mono:
+    "SFMono-Regular",
+    "SF Mono",
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+  --text-body: 13px;
+  --leading-body: 16px;
+
+  --text-callout: 12px;
+  --leading-callout: 15px;
+
+  --text-subheadline: 11px;
+  --leading-subheadline: 14px;
+
+  --text-caption: 10px;
+  --leading-caption: 13px;
+
+  /* ---------------------------------------------------------
+     Control geometry
+     --------------------------------------------------------- */
+
+  --control-height-regular: 28px;
+  --control-height-small: 24px;
+  --control-height-mini: 20px;
+
+  --control-radius: 6px;
+
+  /* ---------------------------------------------------------
+     Window
+     --------------------------------------------------------- */
+
+  --macos-window-background: #ffffff;
+
+  /* ---------------------------------------------------------
+     Accent colors
+     macOS 27 Design Resource
+     --------------------------------------------------------- */
+
+  --macos-red: #ff383c;
+  --macos-orange: #ff8d28;
+  --macos-yellow: #ffcc00;
+  --macos-green: #34c759;
+  --macos-mint: #00c8b3;
+  --macos-teal: #00c3d0;
+  --macos-cyan: #00c0e8;
+  --macos-blue: #0088ff;
+  --macos-indigo: #6155f5;
+  --macos-purple: #cb30e0;
+
+  /* ---------------------------------------------------------
+     Grays
+     --------------------------------------------------------- */
+
+  --macos-black: #000000;
+  --macos-white: #ffffff;
+  --macos-gray: #8e8e93;
+
+  /* ---------------------------------------------------------
+     Labels
+     --------------------------------------------------------- */
+
+  --label-primary: rgb(0 0 0 / 85%);
+  --label-secondary: rgb(0 0 0 / 50%);
+  --label-tertiary: rgb(0 0 0 / 25%);
+  --label-quaternary: rgb(0 0 0 / 10%);
+  --label-quinary: rgb(0 0 0 / 5%);
+  --label-seximal: rgb(0 0 0 / 3%);
+  --label-white: #ffffff;
+
+  /* ---------------------------------------------------------
+     Labels — Vibrant
+     --------------------------------------------------------- */
+
+  --label-vibrant-primary: #1a1a1a;
+  --label-vibrant-secondary: #727272;
+  --label-vibrant-tertiary: #bfbfbf;
+  --label-vibrant-quaternary: #d9d9d9;
+  --label-vibrant-quinary: #e6e6e6;
+
+  /* ---------------------------------------------------------
+     Fills — Opaque
+     --------------------------------------------------------- */
+
+  --fill-primary: rgb(0 0 0 / 10%);
+  --fill-secondary: rgb(0 0 0 / 8%);
+  --fill-tertiary: rgb(0 0 0 / 5%);
+  --fill-quaternary: rgb(0 0 0 / 3%);
+  --fill-quinary: rgb(0 0 0 / 2%);
+
+  /* ---------------------------------------------------------
+     Fills — Vibrant
+     --------------------------------------------------------- */
+
+  --fill-vibrant-primary: #d9d9d9;
+  --fill-vibrant-secondary: #e6e6e6;
+  --fill-vibrant-tertiary: #f2f2f2;
+
+  /* ---------------------------------------------------------
+     Miscellaneous
+     --------------------------------------------------------- */
+
+  --scrollbar: rgb(0 0 0 / 50%);
+
+  --alert-overlay: rgb(171 171 171 / 60%);
+
+  --sidebar-label-inactive: #878787;
+
+  --table-row-alternating: rgb(0 0 0 / 5%);
+  --table-selected-active: #0165e2;
+  --table-selected-inactive: rgb(0 0 0 / 14%);
+  --table-column-separator: rgb(0 0 0 / 10%);
+
+  /* ---------------------------------------------------------
+     SHADCN COMPATIBILITY MAPPING
+     --------------------------------------------------------- */
+
+  --background: var(--macos-window-background);
+  --foreground: var(--label-primary);
+
+  --popover: var(--macos-window-background);
+  --popover-foreground: var(--label-primary);
+
+  /*
+   * Primary = macOS accent.
+   */
+  --primary: var(--macos-blue);
+  --primary-foreground: #ffffff;
+
+  /*
+   * Standard secondary controls use system fills,
+   * rather than a solid gray web-button color.
+   */
+  --secondary: var(--fill-primary);
+  --secondary-foreground: var(--label-primary);
+
+  --muted: var(--fill-tertiary);
+  --muted-foreground: var(--label-secondary);
+
+  --accent: var(--fill-primary);
+  --accent-foreground: var(--label-primary);
+
+  --destructive: var(--macos-red);
+
+  --border: var(--label-quaternary);
+  --input: var(--label-quaternary);
+  --ring: var(--macos-blue);
+
+  /* Sidebar */
+  --sidebar: var(--fill-vibrant-tertiary);
+  --sidebar-foreground: var(--label-primary);
+
+  --sidebar-primary: var(--macos-blue);
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: var(--fill-primary);
+  --sidebar-accent-foreground: var(--label-primary);
+
+  --sidebar-border: var(--label-quaternary);
+  --sidebar-ring: var(--macos-blue);
 }
 
+/* =========================================================
+   macOS 27 DESIGN RESOURCE TOKENS
+   DARK
+   ========================================================= */
+
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+  color-scheme: dark;
+
+  --macos-window-background: #1e1e1e;
+
+  /* Accents */
+  --macos-red: #ff4245;
+  --macos-orange: #ff9230;
+  --macos-yellow: #ffd600;
+  --macos-green: #30d158;
+  --macos-mint: #00dac3;
+  --macos-teal: #00d2e0;
+  --macos-cyan: #3cd3fe;
+  --macos-blue: #0091ff;
+  --macos-indigo: #6d7cff;
+  --macos-purple: #db34f2;
+
+  /* Grays */
+  --macos-black: #000000;
+  --macos-white: #ffffff;
+  --macos-gray: #98989f;
+
+  /* Labels */
+  --label-primary: rgb(255 255 255 / 85%);
+  --label-secondary: rgb(255 255 255 / 55%);
+  --label-tertiary: rgb(255 255 255 / 25%);
+  --label-quaternary: rgb(255 255 255 / 10%);
+  --label-quinary: rgb(255 255 255 / 5%);
+  --label-seximal: rgb(255 255 255 / 3%);
+  --label-white: #ffffff;
+
+  /* Labels — Vibrant */
+  --label-vibrant-primary: #f5f5f5;
+  --label-vibrant-secondary: #8a8a8a;
+  --label-vibrant-tertiary: #404040;
+  --label-vibrant-quaternary: #262626;
+  --label-vibrant-quinary: #111111;
+
+  /* Fills — Opaque */
+  --fill-primary: rgb(255 255 255 / 10%);
+  --fill-secondary: rgb(255 255 255 / 8%);
+  --fill-tertiary: rgb(255 255 255 / 5%);
+  --fill-quaternary: rgb(255 255 255 / 3%);
+  --fill-quinary: rgb(255 255 255 / 2%);
+
+  /* Fills — Vibrant */
+  --fill-vibrant-primary: #242424;
+  --fill-vibrant-secondary: #141414;
+  --fill-vibrant-tertiary: #0d0d0d;
+
+  /* Misc */
+  --scrollbar: rgb(255 255 255 / 55%);
+
+  --alert-overlay: rgb(23 23 23 / 62%);
+
+  --sidebar-label-inactive: #666666;
+
+  --table-row-alternating: rgb(255 255 255 / 5%);
+  --table-selected-active: #0158d2;
+  --table-selected-inactive: rgb(255 255 255 / 18%);
+  --table-column-separator: rgb(255 255 255 / 10%);
+
+  /* ShadCN aliases */
+
+  --background: var(--macos-window-background);
+  --foreground: var(--label-primary);
+
+  --popover: var(--macos-window-background);
+  --popover-foreground: var(--label-primary);
+
+  --primary: var(--macos-blue);
+  --primary-foreground: #ffffff;
+
+  --secondary: var(--fill-primary);
+  --secondary-foreground: var(--label-primary);
+
+  --muted: var(--fill-tertiary);
+  --muted-foreground: var(--label-secondary);
+
+  --accent: var(--fill-primary);
+  --accent-foreground: var(--label-primary);
+
+  --destructive: var(--macos-red);
+
+  --border: var(--label-quaternary);
+  --input: var(--label-quaternary);
+  --ring: var(--macos-blue);
+
+  --sidebar: var(--fill-vibrant-primary);
+  --sidebar-foreground: var(--label-primary);
+
+  --sidebar-primary: var(--macos-blue);
+  --sidebar-primary-foreground: #ffffff;
+
+  --sidebar-accent: var(--fill-primary);
+  --sidebar-accent-foreground: var(--label-primary);
+
+  --sidebar-border: var(--label-quaternary);
+  --sidebar-ring: var(--macos-blue);
 }
+
+/* =========================================================
+   BASE
+   ========================================================= */
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
-    }
-  body {
-    @apply bg-background text-foreground;
-    }
+    @apply border-border;
+    box-sizing: border-box;
+  }
+
   html {
-    @apply font-mono;
-    }
+    font-family: var(--font-system);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-width: 100%;
+    min-height: 100vh;
+
+    @apply bg-background text-foreground;
+
+    font-family: var(--font-system);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  ::selection {
+    background: color-mix(
+      in srgb,
+      var(--macos-blue) 30%,
+      transparent
+    );
+  }
+
+  :focus-visible {
+    outline: 3px solid color-mix(
+      in srgb,
+      var(--macos-blue) 45%,
+      transparent
+    );
+
+    outline-offset: 1px;
+  }
 }
