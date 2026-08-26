@@ -70,8 +70,8 @@ function SelectTrigger({
 
         // Clicked/open appearance
         "active:bg-(--select-trigger-background-clicked)",
-        "data-[pressed]:bg-(--select-trigger-background-clicked)",
-        "data-[popup-open]:bg-(--select-trigger-background-clicked)",
+        "data-pressed:bg-(--select-trigger-background-clicked)",
+        "data-popup-open:bg-(--select-trigger-background-clicked)",
 
         // Focus fallback — not present in the supplied Figma variants
         "outline-none ring-offset-0",
@@ -81,19 +81,22 @@ function SelectTrigger({
         // Invalid state
         "aria-invalid:ring-(length:--select-focus-ring-width)",
         "aria-invalid:ring-destructive/35",
-        "data-[invalid]:ring-(length:--select-focus-ring-width)",
-        "data-[invalid]:ring-destructive/35",
+        "data-invalid:ring-(length:--select-focus-ring-width)",
+        "data-invalid:ring-destructive/35",
 
-        // Placeholder
-        "data-placeholder:text-muted-foreground",
+        // Placeholder. Guarded against both disabled forms: the disabled
+        // label colour must win, and relying on Tailwind's variant sort
+        // order to get that is fragile — canonicalising data-[disabled]
+        // to data-disabled silently flipped it once already.
+        "not-disabled:not-data-disabled:data-placeholder:text-muted-foreground",
 
         // Disabled state
         "disabled:pointer-events-none",
         "disabled:bg-(--select-trigger-background-disabled)",
         "disabled:text-(--label-tertiary)",
-        "data-[disabled]:pointer-events-none",
-        "data-[disabled]:bg-(--select-trigger-background-disabled)",
-        "data-[disabled]:text-(--label-tertiary)",
+        "data-disabled:pointer-events-none",
+        "data-disabled:bg-(--select-trigger-background-disabled)",
+        "data-disabled:text-(--label-tertiary)",
 
         // Interaction transition
         "select-none",
@@ -166,10 +169,10 @@ function SelectContent({
 
             // Short native-feeling transition
             "transition-[opacity,transform] duration-(--select-transition-duration)",
-            "data-[starting-style]:scale-(--select-popup-enter-scale)",
-            "data-[starting-style]:opacity-0",
-            "data-[ending-style]:scale-(--select-popup-enter-scale)",
-            "data-[ending-style]:opacity-0",
+            "data-starting-style:scale-(--select-popup-enter-scale)",
+            "data-starting-style:opacity-0",
+            "data-ending-style:scale-(--select-popup-enter-scale)",
+            "data-ending-style:opacity-0",
             "motion-reduce:transition-none",
 
             className
@@ -232,13 +235,13 @@ function SelectItem({
         "outline-none select-none",
 
         // Base UI highlighted state
-        "data-[highlighted]:bg-primary",
-        "data-[highlighted]:text-primary-foreground",
-        "data-[highlighted]:[&_svg]:text-primary-foreground",
+        "data-highlighted:bg-primary",
+        "data-highlighted:text-primary-foreground",
+        "data-highlighted:[&_svg]:text-primary-foreground",
 
         // Disabled state
-        "data-[disabled]:pointer-events-none",
-        "data-[disabled]:text-(--label-tertiary)",
+        "data-disabled:pointer-events-none",
+        "data-disabled:text-(--label-tertiary)",
 
         // Nested content
         "[&_svg]:pointer-events-none",
@@ -252,7 +255,7 @@ function SelectItem({
       )}
       {...props}
     >
-      <SelectPrimitive.ItemIndicator className="pointer-events-none absolute start-(--select-item-indicator-inset) flex size-(--select-item-indicator-size) items-center justify-center">
+      <SelectPrimitive.ItemIndicator className="pointer-events-none absolute inset-s-(--select-item-indicator-inset) flex size-(--select-item-indicator-size) items-center justify-center">
         <CheckIcon
           aria-hidden="true"
           weight="bold"

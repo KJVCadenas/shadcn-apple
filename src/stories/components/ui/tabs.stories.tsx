@@ -144,6 +144,12 @@ export const ThreeSegments: Story = {
   ),
 }
 
+/*
+ * Keep w-[420px] literal. The IDE offers `w-105` as the canonical
+ * form, but that is calc(--spacing * 105) = 26.25rem, and `html` is
+ * 13px in this project, not 16px — so w-105 renders 341.25px, not
+ * 420px. The suggestion is only correct at a 16px root.
+ */
 export const FiveSegments: Story = {
   render: (args) => (
     <Tabs
