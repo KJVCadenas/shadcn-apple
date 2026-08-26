@@ -52,26 +52,26 @@ const tabsListVariants = cva(
 
     /* Disabled applies to the complete control, not each segment. */
     "data-disabled:pointer-events-none",
-    "data-disabled:opacity-[]",
+    "data-disabled:opacity-(--selectable-control-disabled-opacity)",
   ],
   {
     variants: {
       variant: {
         default: [
           /* Track */
-          "h-[]",
+          "h-(--selectable-control-height)",
           "w-full",
-          "gap-[]",
-          "rounded-[]",
-          "bg-[]",
-          "p-[]",
+          "gap-(--selectable-control-track-gap)",
+          "rounded-(--selectable-control-track-radius)",
+          "bg-(--selectable-control-track)",
+          "p-(--selectable-control-track-padding)",
 
           /* Pressed track */
-          "has-[[data-slot=tabs-trigger]:active]:bg-[]",
+          "has-[[data-slot=tabs-trigger]:active]:bg-(--selectable-control-track-pressed)",
 
           /* Focus ring belongs to the track. */
-          "has-[[data-slot=tabs-trigger]:focus-visible]:ring-[length:]",
-          "has-[[data-slot=tabs-trigger]:focus-visible]:ring-[color:]",
+          "has-[[data-slot=tabs-trigger]:focus-visible]:ring-(length:--selectable-control-focus-ring-width)",
+          "has-[[data-slot=tabs-trigger]:focus-visible]:ring-(color:--selectable-control-focus-ring)",
 
           /* Preserve the existing vertical API. */
           "group-data-vertical/tabs:h-fit",
@@ -145,33 +145,33 @@ function TabsTrigger({
           "items-center justify-center",
 
           /* Segment geometry */
-          "h-[]",
-          "rounded-[]",
-          "px-[]",
-          "py-[]",
+          "h-(--selectable-control-segment-height)",
+          "rounded-(--selectable-control-segment-radius)",
+          "px-(--selectable-control-segment-padding-x)",
+          "py-(--selectable-control-segment-padding-y)",
 
           /* Typography */
           "font-sans",
-          "text-[length:]",
-          "leading-[]",
-          "font-[]",
+          "text-(length:--selectable-control-font-size)",
+          "leading-(--selectable-control-line-height)",
+          "font-(--selectable-control-font-weight)",
           "whitespace-nowrap",
 
           /* Unselected */
           "bg-transparent",
-          "text-[]",
+          "text-(--selectable-control-label)",
 
           /* Interaction */
           "cursor-default select-none outline-none",
-          "hover:text-[]",
+          "hover:text-(--selectable-control-label-selected)",
 
           /* Selected — no bold shift and no decorative shadow */
-          "data-active:text-[]",
-          "group-data-[variant=default]/tabs-list:data-active:bg-[]",
+          "data-active:text-(--selectable-control-label-selected)",
+          "group-data-[variant=default]/tabs-list:data-active:bg-(--selectable-control-segment-selected)",
 
           /* Disabled */
           "disabled:pointer-events-none",
-          "disabled:opacity-[]",
+          "disabled:opacity-(--selectable-control-disabled-opacity)",
 
           /*
            * The list already applies 40% opacity when the whole
@@ -187,7 +187,7 @@ function TabsTrigger({
           "group-data-[variant=line]/tabs-list:bg-transparent",
 
           "after:absolute",
-          "after:bg-[]",
+          "after:bg-(--selectable-control-label-selected)",
           "after:opacity-0",
 
           "group-data-horizontal/tabs:after:inset-x-0",

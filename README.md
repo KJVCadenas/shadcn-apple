@@ -9,7 +9,7 @@
 | **P0**   | `Checkbox`                   | `Toggle` checkbox style                  |        |
 | **P0**   | `RadioGroup`                 | Picker / radio group                     |        |
 | **P0**   | `Switch`                     | `Toggle(.switch)`                        |        |
-| **P0**   | `Tabs` / `ToggleGroup`       | Tab View / Segmented Control             |        |
+| **P0**   | `Tabs` / `ToggleGroup`       | Tab View / Segmented Control             | Done   |
 | **P0**   | `DropdownMenu`               | Menu / Pull-down Button                  |        |
 | **P0**   | `ContextMenu`                | Contextual Menu                          |        |
 | **P0**   | `Dialog`, `AlertDialog`      | Sheet / Alert                            |        |
