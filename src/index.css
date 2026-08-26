@@ -276,6 +276,39 @@
 
   --text-field-focus-ring-invalid:
     color-mix(in srgb, var(--macos-red) 50%, transparent);
+
+    /* ----------------------------------------------------------
+     SELECTABLE CONTROL — macOS small control
+     ---------------------------------------------------------- */
+
+  --selectable-control-height: 28px;
+  --selectable-control-segment-height: 24px;
+
+  --selectable-control-track-radius: 7px;
+  --selectable-control-segment-radius: 6px;
+
+  --selectable-control-track-padding: 2px;
+  --selectable-control-track-gap: 2px;
+  --selectable-control-segment-padding-x: 5px;
+  --selectable-control-segment-padding-y: 4px;
+
+  --selectable-control-font-size: 12.5px;
+  --selectable-control-line-height: 16px;
+  --selectable-control-font-weight: 500;
+
+  --selectable-control-track: #eeeef1;
+  --selectable-control-track-pressed: rgb(0 0 0 / 4%);
+
+  --selectable-control-segment-selected: #ffffff;
+
+  --selectable-control-label: #5b5b60;
+  --selectable-control-label-selected: #1c1c1e;
+
+  --selectable-control-focus-ring-width: 3px;
+  --selectable-control-focus-ring:
+    color-mix(in srgb, var(--macos-blue) 35%, transparent);
+
+  --selectable-control-disabled-opacity: 0.4;
 }
 
 /* ============================================================
