@@ -316,6 +316,98 @@
     color-mix(in srgb, var(--macos-blue) 35%, transparent);
 
   --selectable-control-disabled-opacity: 0.4;
+
+  /* ----------------------------------------------------------
+     POP-UP BUTTON / SELECT — linked Figma geometry and states
+     ---------------------------------------------------------- */
+
+  --select-trigger-width: 100px;
+  --select-trigger-height: 24px;
+
+  --select-trigger-padding-inline-start: 12px;
+  --select-trigger-gap: 8px;
+
+  --select-trigger-indicator-container-size: 24px;
+  --select-trigger-indicator-size: 16px;
+  --select-trigger-radius: 6px;
+
+  /* Same 13/16/510 ramp as Button and Text Field. */
+  --select-trigger-font-size: 13px;
+  --select-trigger-line-height: 16px;
+  --select-trigger-font-weight: 510;
+
+  /*
+   * Confirmed states:
+   * Idle 8%, Clicked/Open 16%, Disabled 4%.
+   */
+  --select-trigger-background-idle: rgb(0 0 0 / 8%);
+  --select-trigger-background-clicked: rgb(0 0 0 / 16%);
+  --select-trigger-background-disabled: rgb(0 0 0 / 4%);
+
+  /* Matches Button and Selectable Control. */
+  --select-focus-ring-width: 3px;
+
+  /* ----------------------------------------------------------
+     SELECT MENU — derived, not measured.
+     Structurally right (menu overlays its trigger, checkmark
+     gutter, sticky scroll arrows), but every number below is a
+     conservative value carried over from stock shadcn. None of
+     it comes from a Figma reference or a macOS screenshot the
+     way --select-trigger-* above does. Re-measure before
+     treating any of these as spec.
+
+     These are rounded to whole pixels on purpose. They replace
+     Tailwind spacing utilities (p-1, min-h-6, ps-7, size-3.5),
+     which are rem-based — and because `html` is 13px here, not
+     16px, every one of them rendered at 13/16 scale: p-1 was
+     3.25px, min-h-6 was 19.5px, ps-7 was 22.75px. Those were
+     accidents of the root font size, not chosen values, so the
+     menu is ~23% larger than it used to draw. The 24px row is
+     the one number with a rationale: it matches the measured
+     --select-trigger-height above.
+
+     Corollary worth remembering: ANY bare Tailwind spacing
+     utility in this project is multiplied by 0.8125. Reach for
+     a px token instead when a control needs a real dimension.
+     ---------------------------------------------------------- */
+
+  --select-popup-radius: 8px;
+  --select-popup-padding: 4px;
+  --select-popup-stroke-width: 1px;
+  --select-popup-enter-scale: 0.98;
+  --select-popup-shadow:
+    0 12px 28px rgb(0 0 0 / 22%),
+    0 2px 8px rgb(0 0 0 / 12%);
+
+  --select-item-min-height: 24px;
+  --select-item-radius: 5px;
+  --select-item-padding-block: 4px;
+  --select-item-padding-inline-start: 28px;
+  --select-item-padding-inline-end: 8px;
+  --select-item-gap: 8px;
+  --select-item-font-size: 13px;
+  --select-item-line-height: 16px;
+
+  --select-item-indicator-inset: 6px;
+  --select-item-indicator-size: 16px;
+  --select-item-indicator-glyph-size: 14px;
+
+  --select-label-font-size: 11px;
+  --select-label-line-height: 16px;
+  --select-label-font-weight: 500;
+  --select-label-padding-x: 8px;
+  --select-label-padding-y: 4px;
+  --select-label-padding-inline-start: 28px;
+
+  --select-separator-inset: 4px;
+  --select-separator-spacing: 4px;
+  --select-separator-thickness: 1px;
+
+  --select-scroll-arrow-height: 20px;
+  --select-scroll-arrow-radius: 5px;
+  --select-scroll-arrow-glyph-size: 12px;
+
+  --select-transition-duration: 100ms;
 }
 
 /* ============================================================
@@ -385,8 +477,6 @@
   --sidebar-border: var(--label-quaternary);
   --sidebar-ring: var(--macos-blue);
 
-
-
   /* Button neutrals invert in dark mode */
   --button-neutral-idle: rgb(255 255 255 / 8%);
   --button-neutral-pressed: rgb(255 255 255 / 16%);
@@ -408,6 +498,19 @@
 
   --selectable-control-label: var(--label-secondary);
   --selectable-control-label-selected: var(--label-primary);
+
+  /* Pop-Up Button / Select */
+  --select-trigger-background-idle: rgb(255 255 255 / 8%);
+  --select-trigger-background-clicked: rgb(255 255 255 / 16%);
+  --select-trigger-background-disabled: rgb(255 255 255 / 4%);
+
+  /*
+   * --select-popup-shadow is deliberately NOT overridden here.
+   * macOS almost certainly drops a different menu shadow on a dark
+   * ground, but that value has not been measured — inheriting the
+   * light one is a known gap, not a decision. The menu's other
+   * neutrals resolve through --popover and the label/fill layer.
+   */
 }
 
 /* ============================================================
