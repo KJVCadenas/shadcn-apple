@@ -7,17 +7,23 @@ web app. The target is a near 1:1 match with Apple's controls: the same
 heights, radii, type ramp, label opacities and state transitions.
 
 Reference material is **Apple's Human Interface Guidelines and screenshots of
-real macOS controls**. There is no design file to sync from — when a dimension
-is unknown, it stays unknown (see "Never invent a number").
+real macOS controls**. When a dimension is unknown, it stays unknown (see
+"Never invent a number").
+
+Comments in `index.css` and `button.tsx` that say "Figma" or "linked component"
+mark values taken from a private Figma reference used for the components built
+so far. That file is not part of this repo and cannot be synced from, so treat
+those comments as provenance ("this number was measured, not guessed"), not as
+a source you can open. Anything not carrying such a marker is unverified.
 
 The work is done in Storybook. `src/App.tsx` is a scratch page, not the point.
 
 ## Non-negotiables
 
 1. **No glass.** No `backdrop-filter`, no `blur()`, no vibrancy, no
-   translucency-over-desktop. Liquid Glass is explicitly out of scope. Apple's
-   materials are reproduced as *static* colors — see `--fill-vibrant-*` in
-   `src/index.css`, which are flat hexes.
+   translucency-over-desktop. Liquid Glass is explicitly out of scope. Where
+   Apple uses a material, reproduce it as a *static* color — a flat hex or a
+   `color-mix`, never a live blur.
 2. **Never invent a number.** If the real macOS value for a height, inset or
    radius hasn't been confirmed, do not guess one. Leave the variant empty and
    say so — `button.tsx` does exactly this: `size.xs`, `sm` and `lg` are `""`
@@ -39,8 +45,8 @@ that makes sense; never skip a layer.
 | Layer | Example | Notes |
 |---|---|---|
 | 1. Raw accents | `--macos-blue`, `--macos-red` | Redefined per mode in `.dark` |
-| 2. Labels & fills | `--label-primary`, `--fill-secondary` | Apple's opacity ladder: primary/secondary/tertiary/quaternary/quinary |
-| 3. Surfaces | `--window-background`, `--alert-overlay` | |
+| 2. Labels & fills | `--label-primary`, `--fill-secondary` | Apple's opacity ladder. Labels go to `quaternary`, fills to `tertiary` — lower rungs are added when a component needs one, not kept on spec |
+| 3. Surfaces | `--window-background`, `--popover` | |
 | 4. shadcn aliases | `--primary`, `--muted`, `--border` | Maps layers 1–3 onto names shadcn expects |
 | 5. Component tokens | `--button-height`, `--text-field-radius` | Namespaced per component |
 

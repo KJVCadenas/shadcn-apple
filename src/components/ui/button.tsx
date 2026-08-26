@@ -26,8 +26,8 @@ const buttonVariants = cva(
     "cursor-default",
 
     /* Accessibility */
-    "focus-visible:ring-[3px]",
-    "focus-visible:ring-[color-mix(in_srgb,var(--macos-blue)_35%,transparent)]",
+    "focus-visible:ring-(length:--button-focus-ring-width)",
+    "focus-visible:ring-(color:--button-focus-ring)",
     "focus-visible:ring-offset-1",
 
     /* Disabled */
@@ -47,7 +47,7 @@ const buttonVariants = cva(
 
           "active:bg-(--macos-blue-pressed)",
 
-          "disabled:bg-[color-mix(in_srgb,var(--macos-blue)_40%,transparent)]",
+          "disabled:bg-(--button-blue-fill-disabled)",
           "disabled:text-white/50",
         ],
 
@@ -76,7 +76,7 @@ const buttonVariants = cva(
           "active:bg-(--button-blue-tint-pressed)",
 
           "disabled:bg-(--button-blue-tint-disabled)",
-          "disabled:text-[color-mix(in_srgb,var(--macos-blue)_40%,transparent)]",
+          "disabled:text-(--button-blue-tint-label-disabled)",
         ],
 
         /* macOS: Borderless */
@@ -86,7 +86,7 @@ const buttonVariants = cva(
 
           "active:text-(--macos-blue-pressed)",
 
-          "disabled:text-[color-mix(in_srgb,var(--macos-blue)_50%,transparent)]",
+          "disabled:text-(--button-blue-borderless-label-disabled)",
         ],
 
         /* macOS: Bordered - Prominent Destructive */
@@ -96,7 +96,7 @@ const buttonVariants = cva(
 
           "active:bg-(--macos-red-pressed)",
 
-          "disabled:bg-[color-mix(in_srgb,var(--macos-red)_40%,transparent)]",
+          "disabled:bg-(--button-red-fill-disabled)",
           "disabled:text-white/50",
         ],
 
@@ -108,7 +108,7 @@ const buttonVariants = cva(
           "active:bg-(--button-red-tint-pressed)",
 
           "disabled:bg-(--button-red-tint-disabled)",
-          "disabled:text-[color-mix(in_srgb,var(--macos-red)_40%,transparent)]",
+          "disabled:text-(--button-red-tint-label-disabled)",
         ],
 
         /*
@@ -122,7 +122,7 @@ const buttonVariants = cva(
 
           "active:text-(--macos-blue-pressed)",
 
-          "disabled:text-[color-mix(in_srgb,var(--macos-blue)_50%,transparent)]",
+          "disabled:text-(--button-blue-borderless-label-disabled)",
         ],
       },
 

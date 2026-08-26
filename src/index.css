@@ -119,8 +119,6 @@
   --label-secondary: rgb(0 0 0 / 50%);
   --label-tertiary: rgb(0 0 0 / 25%);
   --label-quaternary: rgb(0 0 0 / 10%);
-  --label-quinary: rgb(0 0 0 / 5%);
-  --label-seximal: rgb(0 0 0 / 3%);
 
   /* ----------------------------------------------------------
      Opaque fills — exact Figma variables
@@ -129,17 +127,6 @@
   --fill-primary: rgb(0 0 0 / 10%);
   --fill-secondary: rgb(0 0 0 / 8%);
   --fill-tertiary: rgb(0 0 0 / 5%);
-  --fill-quaternary: rgb(0 0 0 / 3%);
-  --fill-quinary: rgb(0 0 0 / 2%);
-
-  /* ----------------------------------------------------------
-     Vibrant fills
-     Static colors only — NO glass/blur implementation.
-     ---------------------------------------------------------- */
-
-  --fill-vibrant-primary: #d9d9d9;
-  --fill-vibrant-secondary: #e6e6e6;
-  --fill-vibrant-tertiary: #f2f2f2;
 
   /* ----------------------------------------------------------
      Window / surfaces
@@ -193,13 +180,6 @@
   --sidebar-border: var(--label-quaternary);
   --sidebar-ring: var(--macos-blue);
 
-  --sidebar-label-inactive: #878787;
-
-  /* ----------------------------------------------------------
-     Alert / Dialog
-     ---------------------------------------------------------- */
-
-  --alert-overlay: rgb(171 171 171 / 60%);
 
   /* ----------------------------------------------------------
      BUTTON — exact linked Figma geometry
@@ -245,6 +225,33 @@
 
   --button-red-tint-disabled:
     color-mix(in srgb, var(--macos-red) 10%, transparent);
+
+  /*
+   * Focus ring, per control: 3px at 35%.
+   * Unverified — Text Field uses 50%.
+   */
+  --button-focus-ring-width: 3px;
+  --button-focus-ring:
+    color-mix(in srgb, var(--macos-blue) 35%, transparent);
+
+  /*
+   * Disabled fills and labels, unverified:
+   * Prominent 40%, Tinted label 40%, Borderless label 50%.
+   */
+  --button-blue-fill-disabled:
+    color-mix(in srgb, var(--macos-blue) 40%, transparent);
+
+  --button-blue-tint-label-disabled:
+    color-mix(in srgb, var(--macos-blue) 40%, transparent);
+
+  --button-blue-borderless-label-disabled:
+    color-mix(in srgb, var(--macos-blue) 50%, transparent);
+
+  --button-red-fill-disabled:
+    color-mix(in srgb, var(--macos-red) 40%, transparent);
+
+  --button-red-tint-label-disabled:
+    color-mix(in srgb, var(--macos-red) 40%, transparent);
 
   /* ----------------------------------------------------------
      TEXT FIELD — exact linked Figma geometry and states
@@ -332,20 +339,11 @@
   --label-secondary: rgb(255 255 255 / 55%);
   --label-tertiary: rgb(255 255 255 / 25%);
   --label-quaternary: rgb(255 255 255 / 10%);
-  --label-quinary: rgb(255 255 255 / 5%);
-  --label-seximal: rgb(255 255 255 / 3%);
 
   /* Opaque fills */
   --fill-primary: rgb(255 255 255 / 10%);
   --fill-secondary: rgb(255 255 255 / 8%);
   --fill-tertiary: rgb(255 255 255 / 5%);
-  --fill-quaternary: rgb(255 255 255 / 3%);
-  --fill-quinary: rgb(255 255 255 / 2%);
-
-  /* Vibrant fills */
-  --fill-vibrant-primary: #242424;
-  --fill-vibrant-secondary: #141414;
-  --fill-vibrant-tertiary: #0d0d0d;
 
   /* Window */
   --window-background: #1e1e1e;
@@ -387,9 +385,7 @@
   --sidebar-border: var(--label-quaternary);
   --sidebar-ring: var(--macos-blue);
 
-  --sidebar-label-inactive: #666666;
 
-  --alert-overlay: rgb(23 23 23 / 62%);
 
   /* Button neutrals invert in dark mode */
   --button-neutral-idle: rgb(255 255 255 / 8%);
@@ -399,6 +395,19 @@
   /* Text field semantic colors resolve through dark-mode fills. */
   --text-field-fill: var(--fill-primary);
   --text-field-stroke: var(--label-quaternary);
+
+  /*
+   * Selectable Control — derived, not measured.
+   * Structurally right (recessed track, raised segment);
+   * percentages still need a dark-mode screenshot.
+   */
+  --selectable-control-track: rgb(255 255 255 / 5%);
+  --selectable-control-track-pressed: rgb(255 255 255 / 4%);
+
+  --selectable-control-segment-selected: rgb(255 255 255 / 19%);
+
+  --selectable-control-label: var(--label-secondary);
+  --selectable-control-label-selected: var(--label-primary);
 }
 
 /* ============================================================

@@ -26,6 +26,28 @@ const meta = {
       ],
     },
 
+    /*
+     * xs / sm / lg render identically to default: macOS has one
+     * regular Button and no confirmed specs for alternate sizes, so
+     * they are compatibility aliases only (see button.tsx size).
+     * Listed here so the no-op is visible in autodocs.
+     */
+    size: {
+      control: "select",
+      options: [
+        "default",
+        "xs",
+        "sm",
+        "lg",
+        "icon",
+        "icon-xs",
+        "icon-sm",
+        "icon-lg",
+      ],
+      description:
+        "xs / sm / lg are aliases for default — no confirmed macOS specs yet.",
+    },
+
     disabled: {
       control: "boolean",
     },
