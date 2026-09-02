@@ -10,13 +10,31 @@ Reference material is **Apple's Human Interface Guidelines and screenshots of
 real macOS controls**. When a dimension is unknown, it stays unknown (see
 "Never invent a number").
 
-Comments in `index.css` and `button.tsx` that say "Figma" or "linked component"
-mark values taken from a private Figma reference used for the components built
-so far. That file is not part of this repo and cannot be synced from, so treat
-those comments as provenance ("this number was measured, not guessed"), not as
-a source you can open. Anything not carrying such a marker is unverified.
-
 The work is done in Storybook. `src/App.tsx` is a scratch page, not the point.
+
+## Confidence tiers
+
+Rule 2 below only works if every number says where it came from. Each token
+banner in `index.css` opens with one of four tags, and a component's docblock
+inherits its banner's tag. Never quietly promote a value up this ladder — a
+number moves tier only when someone does the work that earns the new tier.
+
+| Tag | Means | Earned by |
+|---|---|---|
+| `MEASURED` | Read off the private Figma reference or a screenshot of the real control | Someone measured it |
+| `DOCUMENTED` | Apple published this exact number (AppKit API, HIG with a figure) | Citing the page or symbol |
+| `DERIVED` | Reasoned from a `MEASURED` value already in this file, or from a stated macOS convention | Naming what it was derived *from* |
+| `IMPORTED` | Carried in from another project or a generated mockup; never checked against macOS | Nothing — this is the "unverified" tier |
+
+`IMPORTED` is not a resting place. A block that carries it must also name the
+values to re-measure first, so the debt is legible. `DERIVED` blocks that can
+never be measured (macOS ships no such control) must state the exit condition
+instead — see the `DATE PICKER` banner, which is the worked example of both.
+
+Comments that say "Figma" or "linked component" mark values taken from a
+private Figma reference used for the components built so far. That file is not
+part of this repo and cannot be synced from, so treat those comments as
+provenance, not as a source you can open.
 
 ## Non-negotiables
 
@@ -28,6 +46,9 @@ The work is done in Storybook. `src/App.tsx` is a scratch page, not the point.
    radius hasn't been confirmed, do not guess one. Leave the variant empty and
    say so — `button.tsx` does exactly this: `size.xs`, `sm` and `lg` are `""`
    with a comment explaining they're compatibility aliases awaiting real specs.
+   Where a number genuinely has to exist before it can be measured, tag it
+   `DERIVED` or `IMPORTED` and say what would settle it. An untagged number is
+   a bug in the same way a raw hex is.
 3. **Tokens first.** Components never hardcode a color or a dimension. Every
    value comes from a CSS variable defined in `src/index.css`. A raw hex or a
    `px` literal inside a `.tsx` file is a bug.
@@ -68,8 +89,8 @@ Rules for this file:
 1. **Find the real control.** HIG page + a screenshot of the control in every
    state: idle, hover, pressed, focused, disabled, and invalid where it applies.
 2. **Add its tokens** to `src/index.css`, namespaced `--<component>-*`, under a
-   banner comment. Put them in `:root`; add a `.dark` entry only for values
-   that genuinely change.
+   banner comment opening with a confidence tag. Put them in `:root`; add a
+   `.dark` entry only for values that genuinely change.
 3. **Build the component** in `src/components/ui/<name>.tsx` following the
    conventions below.
 4. **Write the story** at `src/stories/components/ui/<name>.stories.tsx` — one
@@ -78,6 +99,26 @@ Rules for this file:
 5. **Check both themes** in Storybook (the toolbar theme switcher toggles the
    `.dark` class) and check the a11y panel.
 6. **Update the roadmap table** in `README.md`.
+
+## Importing a component from another project
+
+Components arriving from a sibling project are `IMPORTED` until proven
+otherwise, no matter how confident their original comments sound. Before one
+lands:
+
+1. **Strip the other project's world.** Tokens describing screens rather than
+   controls (app shells, onboarding, empty states) do not belong here, and
+   neither do references to files, docs or decision logs that don't exist in
+   this repo. If a token has no consumer and names a screen, delete it.
+2. **Cut the app coupling.** No IPC types, no wire formats, no host-specific
+   imports. A component takes the platform shape (`Date`, not an app's date
+   alias) so it stays drop-in — rule 5.
+3. **Re-tag every banner** honestly per the confidence tiers above. A comment
+   that says "derived" because a mockup was reasoned about is `IMPORTED`.
+4. **Re-check it against the conventions below.** Imported code routinely
+   carries `opacity` disabled states and raw colors that rules 2 and 3 forbid.
+5. **Mark it `Imported` in the README table** until it has a macOS reference
+   and a story.
 
 ## Component conventions
 

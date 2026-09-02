@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect, userEvent, within } from "storybook/test"
 
 import {
   Tabs,
@@ -142,6 +143,51 @@ export const ThreeSegments: Story = {
       </TabsContent>
     </Tabs>
   ),
+
+  /*
+   * A click on a segment both moves the selection pill and swaps the view.
+   * Base UI reports the selected segment as aria-selected plus data-active
+   * (the attribute the pill styles off). The panel is named by its own tab,
+   * so query it that way: the outgoing panel stays mounted and inert for the
+   * length of its exit, and an unqualified tabpanel query catches both.
+   */
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    await userEvent.click(canvas.getByRole("tab", { name: "Privacy" }))
+
+    const privacy = canvas.getByRole("tab", { name: "Privacy" })
+    await expect(privacy).toHaveAttribute("aria-selected", "true")
+    await expect(privacy).toHaveAttribute("data-active")
+    await expect(
+      canvas.getByRole("tabpanel", { name: "Privacy" })
+    ).toBeVisible()
+  },
+}
+
+/*
+ * The focus ring belongs to the track, not the segment — the list draws it
+ * via has-[[data-slot=tabs-trigger]:focus-visible], so it is keyboard only.
+ * One tab stop reaches the control: the roving tabindex parks it on the
+ * selected segment, and TabsList sets activateOnFocus, so an arrow moves the
+ * selection with the focus rather than leaving it behind.
+ */
+export const Focused: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    await userEvent.tab()
+    await expect(canvas.getByRole("tab", { name: "General" })).toHaveFocus()
+
+    await userEvent.keyboard("{ArrowRight}")
+
+    const privacy = canvas.getByRole("tab", { name: "Privacy" })
+    await expect(privacy).toHaveFocus()
+    await expect(privacy).toHaveAttribute("aria-selected", "true")
+    await expect(
+      canvas.getByRole("tabpanel", { name: "Privacy" })
+    ).toBeVisible()
+  },
 }
 
 /*
@@ -189,9 +235,32 @@ export const FiveSegments: Story = {
   ),
 }
 
+/*
+ * Disabled applies to the complete control, never to one segment. The list
+ * kills pointer events outright, so user-event's own guard would refuse the
+ * click before it reached the trigger — disabling that check is what makes
+ * this test about the component's inertness rather than the library's.
+ */
 export const Disabled: Story = {
   args: {
     disabled: true,
+  },
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+
+    await userEvent.click(canvas.getByRole("tab", { name: "Privacy" }), {
+      pointerEventsCheck: 0,
+    })
+
+    await expect(canvas.getByRole("tab", { name: "General" })).toHaveAttribute(
+      "aria-selected",
+      "true"
+    )
+    await expect(canvas.getByRole("tab", { name: "Privacy" })).toHaveAttribute(
+      "aria-selected",
+      "false"
+    )
   },
 }
 

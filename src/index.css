@@ -66,9 +66,9 @@
 :root {
   color-scheme: light;
 
-  /* ----------------------------------------------------------
+  /* ============================================================
      Typography
-     ---------------------------------------------------------- */
+     ============================================================ */
 
   --font-system:
     -apple-system,
@@ -91,9 +91,9 @@
   --font-size-body: 13px;
   --line-height-body: 16px;
 
-  /* ----------------------------------------------------------
+  /* ============================================================
      macOS 27 accents
-     ---------------------------------------------------------- */
+     ============================================================ */
 
   --macos-blue: #0088ff;
   --macos-red: #ff383c;
@@ -111,26 +111,26 @@
   --macos-red-pressed:
     color-mix(in srgb, var(--macos-red) 82%, black);
 
-  /* ----------------------------------------------------------
-     Labels — exact Figma variables
-     ---------------------------------------------------------- */
+  /* ============================================================
+     Labels — MEASURED (Figma variables)
+     ============================================================ */
 
   --label-primary: rgb(0 0 0 / 85%);
   --label-secondary: rgb(0 0 0 / 50%);
   --label-tertiary: rgb(0 0 0 / 25%);
   --label-quaternary: rgb(0 0 0 / 10%);
 
-  /* ----------------------------------------------------------
-     Opaque fills — exact Figma variables
-     ---------------------------------------------------------- */
+  /* ============================================================
+     Opaque fills — MEASURED (Figma variables)
+     ============================================================ */
 
   --fill-primary: rgb(0 0 0 / 10%);
   --fill-secondary: rgb(0 0 0 / 8%);
   --fill-tertiary: rgb(0 0 0 / 5%);
 
-  /* ----------------------------------------------------------
+  /* ============================================================
      Window / surfaces
-     ---------------------------------------------------------- */
+     ============================================================ */
 
   --window-background: #ffffff;
 
@@ -140,9 +140,9 @@
   --popover: var(--window-background);
   --popover-foreground: var(--label-primary);
 
-  /* ----------------------------------------------------------
+  /* ============================================================
      ShadCN compatibility aliases
-     ---------------------------------------------------------- */
+     ============================================================ */
 
   --primary: var(--macos-blue);
   --primary-foreground: #ffffff;
@@ -162,11 +162,10 @@
   --input: var(--label-quaternary);
   --ring: var(--macos-blue);
 
-  /* ----------------------------------------------------------
-     Sidebar — provisional aliases
-     Exact geometry/colors should come from the Sidebar node
-     when that component is transferred.
-     ---------------------------------------------------------- */
+  /* ============================================================
+     Sidebar — provisional aliases. Exact geometry/colors should
+     come from the Sidebar node when that component is transferred.
+     ============================================================ */
 
   --sidebar: var(--window-background);
   --sidebar-foreground: var(--label-primary);
@@ -180,10 +179,9 @@
   --sidebar-border: var(--label-quaternary);
   --sidebar-ring: var(--macos-blue);
 
-
-  /* ----------------------------------------------------------
-     BUTTON — exact linked Figma geometry
-     ---------------------------------------------------------- */
+  /* ============================================================
+     BUTTON — MEASURED (linked Figma geometry)
+     ============================================================ */
 
   --button-height: 24px;
   --button-padding-x: 16px;
@@ -253,9 +251,9 @@
   --button-red-tint-label-disabled:
     color-mix(in srgb, var(--macos-red) 40%, transparent);
 
-  /* ----------------------------------------------------------
-     TEXT FIELD — exact linked Figma geometry and states
-     ---------------------------------------------------------- */
+  /* ============================================================
+     TEXT FIELD — MEASURED (linked Figma geometry and states)
+     ============================================================ */
 
   --text-field-height: 24px;
   --text-field-inset-left: 8px;
@@ -284,9 +282,9 @@
   --text-field-focus-ring-invalid:
     color-mix(in srgb, var(--macos-red) 50%, transparent);
 
-    /* ----------------------------------------------------------
+  /* ============================================================
      SELECTABLE CONTROL — macOS small control
-     ---------------------------------------------------------- */
+     ============================================================ */
 
   --selectable-control-height: 28px;
   --selectable-control-segment-height: 24px;
@@ -317,9 +315,10 @@
 
   --selectable-control-disabled-opacity: 0.4;
 
-  /* ----------------------------------------------------------
-     POP-UP BUTTON / SELECT — linked Figma geometry and states
-     ---------------------------------------------------------- */
+  /* ============================================================
+     POP-UP BUTTON / SELECT — MEASURED (linked Figma geometry
+     and states)
+     ============================================================ */
 
   --select-trigger-width: 100px;
   --select-trigger-height: 24px;
@@ -347,8 +346,9 @@
   /* Matches Button and Selectable Control. */
   --select-focus-ring-width: 3px;
 
-  /* ----------------------------------------------------------
-     SELECT MENU — derived, not measured.
+  /* ============================================================
+     SELECT MENU — DERIVED, not measured.
+
      Structurally right (menu overlays its trigger, checkmark
      gutter, sticky scroll arrows), but every number below is a
      conservative value carried over from stock shadcn. None of
@@ -369,7 +369,7 @@
      Corollary worth remembering: ANY bare Tailwind spacing
      utility in this project is multiplied by 0.8125. Reach for
      a px token instead when a control needs a real dimension.
-     ---------------------------------------------------------- */
+     ============================================================ */
 
   --select-popup-radius: 8px;
   --select-popup-padding: 4px;
@@ -408,6 +408,226 @@
   --select-scroll-arrow-glyph-size: 12px;
 
   --select-transition-duration: 100ms;
+
+  /* ============================================================
+     TYPE RAMP — DOCUMENTED (AppKit NSFont.TextStyle point sizes).
+
+     Apple publishes these sizes; nothing here was measured off a
+     screenshot. Reach for one of these rather than a rem-based
+     Tailwind size — see the rem corollary in SELECT MENU above.
+     ============================================================ */
+
+  --font-size-title-1: 22px;
+  --font-size-title-2: 17px;
+  --font-size-title-3: 15px;
+  --font-size-callout: 12px;
+  --font-size-subheadline: 11px;
+
+  --line-height-title-1: 26px;
+  --line-height-title-2: 22px;
+  --line-height-title-3: 20px;
+  --line-height-callout: 16px;
+  --line-height-subheadline: 14px;
+
+  /* Body set at a reading measure, for multi-line prose. */
+  --line-height-body-relaxed: 20px;
+
+  /* ============================================================
+     TOGGLES — MEASURED (Figma: Toggles - Checkboxes and
+     Toggles - Radio Buttons), except the focus ring.
+
+     The kit files both controls under "Toggles" and they share
+     everything but their radius and their glyph: the same 16px
+     box, the same fill ladder, the same plus-darker Clicked
+     overlay, the same 45% Disabled, the same label gap — whose
+     variable the kit actually names --radio-button/spacing and
+     then reuses on the checkbox. So the shared half lives here
+     and each component below adds only what differs.
+
+     State is Idle/Clicked/Disabled and Selection is On/Mixed/Off,
+     so "pressed" is called Clicked here as it is in Button.
+
+     Disabled settles a question AppKit only hinted at: the kit
+     does NOT fade the control as a unit. The box drops to 45%
+     while the label switches to Labels/Tertiary. That is
+     NSColor.disabledControlTextColor behaviour — explicit
+     colours, not a blanket opacity — and it is why nothing here
+     uses --selectable-control-disabled-opacity.
+
+     IMPORTED — the focus ring alone. The State enum has no
+     Focused member because macOS draws that ring itself, so no
+     further reading of the kit will produce it. Exit condition:
+     a screenshot of a real focused control.
+     ============================================================ */
+
+  --toggle-size: 16px;
+
+  /*
+   * Box fills. Idle and disabled land exactly on the fill ladder
+   * (Fills - Opaque/Primary and /Tertiary), so they inherit the
+   * .dark inversion for free. Clicked is off the ladder — a
+   * one-off in the kit.
+   */
+  --toggle-fill: var(--fill-primary);
+  --toggle-fill-pressed: rgb(0 0 0 / 19%);
+  --toggle-fill-disabled: var(--fill-tertiary);
+
+  /*
+   * The accent box under Clicked and Disabled. The kit stacks a
+   * vibrant fill over the tint in plus-darker: #e6e6e6 for
+   * Clicked, and Disabled instead drops the whole layer to 45%.
+   *
+   * plus-darker subtracts (255 - 230) = 25 per channel, which
+   * relative colour reproduces exactly — and keeps working if the
+   * accent changes, which color-mix toward black would not.
+   */
+  --toggle-accent-pressed:
+    rgb(from var(--macos-blue) calc(r - 25) calc(g - 25) calc(b - 25));
+  --toggle-accent-disabled:
+    color-mix(in srgb, var(--macos-blue) 45%, transparent);
+
+  /* The glyph rides the accent box, so it is white in both modes. */
+  --toggle-glyph: #ffffff;
+  --toggle-glyph-disabled: rgb(255 255 255 / 50%);
+
+  /* Mixed is a rounded bar, not a glyph. Shared by both controls. */
+  --toggle-dash-width: 6.5px;
+  --toggle-dash-height: 2px;
+
+  --toggle-label-gap: 3px;
+
+  --toggle-focus-ring-width: 3px;
+  --toggle-focus-ring:
+    color-mix(in srgb, var(--macos-blue) 35%, transparent);
+
+  /* ============================================================
+     CHECKBOX — MEASURED. Adds a radius and a glyph to TOGGLES.
+
+     The checkmark path lives in checkbox.tsx rather than here
+     because a path is not a value; its bounds are 9.31 x 8.93
+     centred in a 16 viewBox, which is where the kit's
+     Checkboxes/Width - Checkmark and /Height - Checkmark come
+     from, and scaling --toggle-size scales the glyph with it.
+     ============================================================ */
+
+  --checkbox-radius: 5.5px;
+
+  /* ============================================================
+     RADIO BUTTON — MEASURED. Adds a dot to TOGGLES; the radius
+     is simply round.
+
+     The kit gives the radio a Mixed variant drawn with the same
+     bar as the checkbox. It is not ported: Base UI's radio has no
+     indeterminate state and a mixed radio button has no meaning
+     in a form. Add it if a real screen ever needs one.
+     ============================================================ */
+
+  --radio-button-dot-size: 4.8px;
+
+  /* ============================================================
+     POPOVER SURFACE — DERIVED.
+
+     Shares the Select menu's hairline and enter transition, so it
+     stays one family with it. The radius and the shadow are
+     eyeballed against a macOS popover, not measured.
+     ============================================================ */
+
+  --popover-radius: 10px;
+  --popover-stroke: rgb(0 0 0 / 16%);
+  --popover-stroke-width: var(--select-popup-stroke-width);
+  --popover-enter-scale: var(--select-popup-enter-scale);
+  --popover-transition-duration: var(--select-transition-duration);
+
+  --popover-shadow:
+    0 18px 42px rgb(0 0 0 / 20%),
+    0 5px 14px rgb(0 0 0 / 12%),
+    0 1px 3px rgb(0 0 0 / 10%);
+
+  /* ============================================================
+     DATE PICKER — mixed confidence. Read this before trusting a
+     number below.
+
+     MEASURED — the trigger. Height, radius and type are the Text
+     Field's own tokens (24px / 6px / 13px on 16px), because the
+     trigger IS a text field that opens a calendar instead of
+     taking keystrokes. The 24px nav buttons match the macOS
+     Arrow Button at regular size.
+
+     DOCUMENTED — the behavior, not the geometry. AppKit's
+     NSDatePicker in .textField + .yearMonthDay mode with
+     presentsCalendarOverlay is the control this reproduces, and
+     the seven-column month grid, localized weekday and month
+     labels, previous/next navigation and today/selected/disabled
+     states all come from it.
+
+     DERIVED — everything about the calendar's size. The 216px
+     width, 24px cells, 4px column gap, 3px row gap, 12px popup
+     padding, the 54px caption inset, the 10px weekday, the
+     popover radius and shadow, and the accent-filled circular
+     selection are reasoned, not measured.
+
+     Why they have to be: the macOS UI kit ships Text Fields,
+     Arrow Buttons, Popovers, colors and text styles, but no
+     complete Date Picker component. Apple's Pickers HIG page
+     documents the behavior and gives no dimensions, and the
+     picker illustrated there is the iOS/iPadOS compact one —
+     its much larger proportions were deliberately not copied.
+
+     Exit condition: screenshot a real NSDatePicker on the macOS
+     version being targeted and compare every DERIVED value above.
+     ============================================================ */
+
+  --date-picker-trigger-height: 24px;
+  --date-picker-trigger-padding-x: 8px;
+  --date-picker-trigger-radius: 6px;
+  --date-picker-trigger-transition-duration: 80ms;
+
+  --date-picker-width: 216px;
+  --date-picker-popup-padding: 12px;
+
+  --date-picker-cell-size: 24px;
+  --date-picker-column-gap: 4px;
+  --date-picker-row-gap: 3px;
+
+  --date-picker-day-radius: var(--select-item-radius);
+  --date-picker-day-font-weight: 400;
+  --date-picker-day-font-weight-today: 590;
+  --date-picker-day-font-weight-selected: 510;
+
+  --date-picker-caption-height: 24px;
+  --date-picker-caption-gap: 8px;
+  --date-picker-caption-font-weight: 590;
+  --date-picker-caption-tracking: -0.01em;
+
+  /* Clears the two 24px nav buttons and the 2px between them. */
+  --date-picker-caption-inset-end: 54px;
+
+  --date-picker-nav-gap: 2px;
+  --date-picker-nav-radius: 6px;
+  --date-picker-chevron-size: 12px;
+
+  --date-picker-weekday-height: 16px;
+  --date-picker-weekday-gap: 6px;
+  --date-picker-weekday-font-size: 10px;
+  --date-picker-weekday-line-height: 12px;
+  --date-picker-weekday-font-weight: 590;
+  --date-picker-weekday-tracking: 0.025em;
+
+  --date-picker-hover-fill: var(--fill-primary);
+  --date-picker-pressed-fill: var(--fill-secondary);
+
+  --date-picker-selection-fill: var(--macos-blue);
+  --date-picker-selection-label: #ffffff;
+
+  --date-picker-focus-ring: var(--text-field-focus-ring);
+  --date-picker-transition-duration: 70ms;
+
+  /* Narrower than --text-field-focus-ring-width (3.5px) on purpose: cells sit 4px across
+     and 3px down, so a field-width halo would overlap its neighbours. */
+  --date-picker-focus-ring-width: 2px;
+
+  /* The outer half of the two-ring focus treatment forced-contrast draws. */
+  --date-picker-focus-ring-width-contrast: 4px;
 }
 
 /* ============================================================
@@ -433,6 +653,10 @@
   --label-quaternary: rgb(255 255 255 / 10%);
 
   /* Opaque fills */
+  /* DERIVED — the ladder mirrors to white in dark, so the one
+     off-ladder toggle fill is assumed to mirror with it. */
+  --toggle-fill-pressed: rgb(255 255 255 / 19%);
+
   --fill-primary: rgb(255 255 255 / 10%);
   --fill-secondary: rgb(255 255 255 / 8%);
   --fill-tertiary: rgb(255 255 255 / 5%);
@@ -487,7 +711,7 @@
   --text-field-stroke: var(--label-quaternary);
 
   /*
-   * Selectable Control — derived, not measured.
+   * Selectable Control — DERIVED, not measured.
    * Structurally right (recessed track, raised segment);
    * percentages still need a dark-mode screenshot.
    */
@@ -511,6 +735,16 @@
    * light one is a known gap, not a decision. The menu's other
    * neutrals resolve through --popover and the label/fill layer.
    */
+
+  /*
+   * Popover surface — DERIVED, the same standing as the light
+   * values. The popup ground resolves through --popover, set above.
+   */
+  --popover-stroke: rgb(255 255 255 / 16%);
+  --popover-shadow:
+    0 20px 48px rgb(0 0 0 / 58%),
+    0 6px 16px rgb(0 0 0 / 42%),
+    0 1px 3px rgb(0 0 0 / 36%);
 }
 
 /* ============================================================
@@ -566,11 +800,10 @@
    Figma's "Active=False" is window/activity state, NOT the
    button's pressed state.
 
-   Your Tauri layer can later toggle:
+   A host shell toggles the attribute on the root element:
 
    <html data-window-active="true">
    <html data-window-active="false">
-
    ============================================================ */
 
 @layer components {
@@ -608,5 +841,23 @@
     ):disabled {
     background: var(--button-neutral-disabled);
     color: var(--label-tertiary);
+  }
+
+  /* A calendar's selection is an accent fill, so it greys with the window as a button's
+     does — reached through the gridcell DayPicker marks up, not data-variant. */
+  html[data-window-active="false"]
+    [data-slot="calendar"] td[data-selected] > button {
+    background: var(--fill-primary);
+    color: var(--label-primary);
+  }
+
+  html[data-window-active="false"]
+    [data-slot="calendar"] td[data-today]:not([data-selected]) > button {
+    color: var(--label-secondary);
+  }
+
+  html[data-window-active="false"]
+    [data-slot="date-picker-trigger"][data-popup-open] {
+    color: var(--label-primary);
   }
 }

@@ -1,5 +1,6 @@
 import { useState } from "react"
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect, userEvent, within } from "storybook/test"
 import {
   CopyIcon,
   EnvelopeSimpleIcon,
@@ -161,10 +162,34 @@ export const WithAction: Story = {
   },
 }
 
+/*
+ * The reveal button is the one addon here that owns state. macOS swaps the
+ * eye glyph and the control's obscuring together, so the button's accessible
+ * name and the field's `type` have to move as one.
+ */
 export const Password: Story = {
   render: () => <PasswordInputGroup />,
+
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    const field = canvas.getByLabelText("Password")
+
+    await expect(field).toHaveAttribute("type", "password")
+
+    await userEvent.click(canvas.getByRole("button", { name: "Show password" }))
+    await expect(field).toHaveAttribute("type", "text")
+
+    await userEvent.click(canvas.getByRole("button", { name: "Hide password" }))
+    await expect(field).toHaveAttribute("type", "password")
+  },
 }
 
+/*
+ * autoFocus, so focus is already placed — no tab needed. The assertion is on
+ * the control rather than the group because the wrapper keys its blue stroke
+ * and halo off has-[[data-slot=input-group-control]:focus]; focus anywhere
+ * else in the field would paint nothing.
+ */
 export const Focused: Story = {
   args: {
     children: (
@@ -175,8 +200,21 @@ export const Focused: Story = {
       />
     ),
   },
+
+  play: async ({ canvasElement }) => {
+    const control = within(canvasElement).getByRole("textbox", {
+      name: "Focused value",
+    })
+
+    await expect(control).toHaveAttribute("data-slot", "input-group-control")
+    await expect(control).toHaveFocus()
+  },
 }
 
+/*
+ * Disabled lives on the control, not the wrapper — the group only reacts to
+ * it, fading its fill and stroke through has-[...:disabled].
+ */
 export const Disabled: Story = {
   args: {
     children: (
@@ -192,6 +230,14 @@ export const Disabled: Story = {
         />
       </>
     ),
+  },
+
+  play: async ({ canvasElement }) => {
+    const control = within(canvasElement).getByRole("textbox", {
+      name: "Disabled value",
+    })
+
+    await expect(control).toBeDisabled()
   },
 }
 

@@ -1,4 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import {
+  expect,
+  screen,
+  userEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+  within,
+} from "storybook/test"
 
 import {
   Select,
@@ -164,11 +172,89 @@ export const Open: Story = {
   decorators: roomy("h-56"),
 }
 
-/* Disabled — the fill fades and the label drops to --label-tertiary. */
+/*
+ * The same open state, reached the way a user reaches it. Base UI portals the
+ * positioner out of the story canvas, so the trigger comes from the canvas and
+ * everything inside the menu comes from `screen`.
+ *
+ * The menu commits its open state in a rAF after the mousedown, so the trigger
+ * still reads closed on the tick the click resolves — hence waitFor rather
+ * than a bare assertion. Base UI also puts role="listbox" on the inner List,
+ * not on the popup: the popup is role="presentation" while a List is mounted.
+ */
+export const OpenByClick: Story = {
+  args: {
+    defaultValue: "center",
+  },
+
+  decorators: roomy("h-56"),
+
+  play: async ({ canvasElement }) => {
+    const trigger = within(canvasElement).getByRole("combobox", {
+      name: "Alignment",
+    })
+
+    await userEvent.click(trigger)
+
+    await waitFor(() => expect(trigger).toHaveAttribute("data-popup-open"))
+    await screen.findByRole("listbox")
+  },
+}
+
+/*
+ * Picking a row — the pop-up button's whole point. The menu has to be fully
+ * open before a row will take a click, so this waits on the trigger's open
+ * state rather than on the popup being in the DOM, which happens a frame
+ * earlier. The label the trigger keeps afterwards comes from the `items` map:
+ * the popup is out of the tree by then and can no longer supply it.
+ *
+ * Base UI does not tear the menu down on close — it leaves the positioner in
+ * place under a `hidden` attribute — so the removal is watched through a role
+ * query, which ignores hidden subtrees, rather than through an element handle
+ * that would never go away.
+ */
+export const Selects: Story = {
+  args: {
+    defaultValue: "center",
+  },
+
+  decorators: roomy("h-56"),
+
+  play: async ({ canvasElement }) => {
+    const trigger = within(canvasElement).getByRole("combobox", {
+      name: "Alignment",
+    })
+
+    await userEvent.click(trigger)
+    await waitFor(() => expect(trigger).toHaveAttribute("data-popup-open"))
+
+    await userEvent.click(screen.getByRole("option", { name: "Right" }))
+
+    await waitForElementToBeRemoved(() => screen.queryByRole("listbox"))
+    await expect(trigger).toHaveTextContent("Right")
+  },
+}
+
+/*
+ * Disabled — the fill fades and the label drops to --label-tertiary.
+ *
+ * A dead macOS pop-up button is dead to the pointer too. user-event refuses to
+ * click through the disabled:pointer-events-none that enforces it, so the
+ * check is waived to let the click land and show that no menu follows.
+ */
 export const Disabled: Story = {
   args: {
     defaultValue: "center",
     disabled: true,
+  },
+
+  play: async ({ canvasElement }) => {
+    const trigger = within(canvasElement).getByRole("combobox", {
+      name: "Alignment",
+    })
+
+    await userEvent.click(trigger, { pointerEventsCheck: 0 })
+    await expect(screen.queryByRole("listbox")).toBeNull()
   },
 }
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect, fn, userEvent, within } from "storybook/test"
 
 import { Button } from "@/components/ui/button"
 
@@ -55,12 +56,21 @@ const meta = {
     children: {
       control: "text",
     },
+
+    /* Test scaffolding for the click assertions, not a knob — keep it out of autodocs. */
+    onClick: {
+      control: false,
+      table: {
+        disable: true,
+      },
+    },
   },
 
   args: {
     children: "Label",
     variant: "default",
     disabled: false,
+    onClick: fn(),
   },
 } satisfies Meta<typeof Button>
 
@@ -68,7 +78,18 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {}
+/*
+ * A live Prominent button passes the click through to its handler. This is the
+ * baseline the Disabled story is measured against — same gesture, no handler.
+ */
+export const Playground: Story = {
+  play: async ({ args, canvasElement }) => {
+    const button = within(canvasElement).getByRole("button", { name: "Label" })
+
+    await userEvent.click(button)
+    await expect(args.onClick).toHaveBeenCalledTimes(1)
+  },
+}
 
 export const Prominent: Story = {
   args: {
@@ -106,10 +127,37 @@ export const DestructiveBordered: Story = {
   },
 }
 
+/*
+ * Focus is `focus-visible`, so the ring only paints for the keyboard — a
+ * programmatic focus() would show nothing. Tab into it the way a user does.
+ */
+export const Focused: Story = {
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole("button", { name: "Label" })
+
+    await userEvent.tab()
+    await expect(button).toHaveFocus()
+  },
+}
+
+/*
+ * macOS leaves a disabled button in place but inert. Two things make it so —
+ * Base UI sets the native disabled attribute, and the variant adds
+ * pointer-events-none — and the second is why the pointer-events check has to
+ * be switched off: without it user-event declines to click at all, and the
+ * story would pass without ever reaching the guard it means to test.
+ */
 export const Disabled: Story = {
   args: {
     variant: "default",
     disabled: true,
+  },
+
+  play: async ({ args, canvasElement }) => {
+    const button = within(canvasElement).getByRole("button", { name: "Label" })
+
+    await userEvent.click(button, { pointerEventsCheck: 0 })
+    await expect(args.onClick).not.toHaveBeenCalled()
   },
 }
 
