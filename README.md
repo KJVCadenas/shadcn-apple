@@ -22,10 +22,10 @@
 | **P0**   | `Select`                     | Picker / Pop-up Button                   | Done   |
 | **P0**   | `Combobox`                   | Combo Box                                |        |
 | **P0**   | `Checkbox`                   | `Toggle` checkbox style                  | Done   |
-| **P0**   | `RadioButton`                | `Picker(.radioGroup)` / radio buttons    | Done   |
-| **P0**   | `RadioGroup`                 | Selectable Control (segmented)           | Done   |
+| **P0**   | `RadioGroup`                 | `Picker(.radioGroup)` / radio buttons    | Done   |
+| **P0**   | `ToggleGroup`                | Selectable Control (segmented)           | Done   |
 | **P0**   | `Switch`                     | `Toggle(.switch)`                        |        |
-| **P0**   | `Tabs` / `ToggleGroup`       | Tab View / Segmented Control             | Done   |
+| **P0**   | `Tabs`                       | Tab View                                 | Done   |
 | **P0**   | `DropdownMenu`               | Menu / Pull-down Button                  |        |
 | **P0**   | `ContextMenu`                | Contextual Menu                          |        |
 | **P0**   | `Dialog`, `AlertDialog`      | Sheet / Alert                            |        |
@@ -51,14 +51,7 @@
   itself. `--checkbox-focus-ring*` is the component's only remaining `IMPORTED`
   value, and it closes with a screenshot of a real focused control rather than
   another trip to the UI kit.
-- **`RadioGroup` is named for the shadcn API but draws the segmented
-  control.** The kit ships `Toggles - Radio Buttons` and the Selectable Control
-  as two components, so this repo now does too — the dots live in
-  `RadioButton`. That leaves `RadioGroup` semantically off for a drop-in
-  consumer, who would expect it to render dots. Renaming it to `ToggleGroup`
-  would fix rule 5 and break anything importing it; that call has not been
-  made.
-- **`RadioButton` does not implement the kit's Mixed state.** The kit gives the
+- **`RadioGroup` does not implement the kit's Mixed state.** The kit gives the
   radio the same 6.5 x 2 bar the checkbox uses for mixed. Base UI's radio has
   no indeterminate state and a mixed radio button has no meaning in a form, so
   it is deliberately absent rather than missed.

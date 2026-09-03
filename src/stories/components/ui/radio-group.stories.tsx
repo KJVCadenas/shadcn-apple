@@ -4,19 +4,32 @@ import { expect, userEvent, within } from "storybook/test"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 /*
- * macOS: Selectable Control — a segmented picker, not a column of dots.
+ * macOS: Toggles - Radio Buttons. A 16px circle that fills with the accent
+ * and carries a 4.8px white dot — the same control as the checkbox below the
+ * glyph, which is why both draw from the shared TOGGLES block.
  *
- * This shares every --selectable-control-* token with Tabs, so the two render
- * identically and differ only in semantics: Tabs switches a view, this sets a
- * form value. Compare against Components/Tabs — they should be pixel-identical,
- * and if they ever drift, one of them has grown a token the other needs.
+ * This is NOT the segmented picker in toggle-group.stories.tsx. The kit ships
+ * the two as separate components and so does this repo.
  *
- * The stock dot variant is not ported. macOS radio buttons ARE dots, so this
- * mapping is an open question — see "Known gaps" in README.md.
+ * Every number here except the focus ring is MEASURED off the kit.
+ *
+ * The label is typed with the body tokens rather than <Label>: that component
+ * is still stock shadcn and its `text-xs` is rem-based, so the 13px root
+ * renders it at 9.75px. See the rem corollary in index.css.
  */
+const labelClass = [
+  "flex items-center gap-(--toggle-label-gap) select-none",
+  /* macOS dims a disabled label to tertiary rather than fading the row. */
+  "has-[[data-slot=radio-group-item]:disabled]:text-(--label-tertiary)",
+  "font-sans",
+  "text-(length:--font-size-body)",
+  "leading-(--line-height-body)",
+  "text-(--label-primary)",
+].join(" ")
+
 const meta = {
   title: "Components/RadioGroup",
-  component: RadioGroup,
+  component: RadioGroupItem,
 
   parameters: {
     layout: "centered",
@@ -24,12 +37,24 @@ const meta = {
 
   tags: ["autodocs"],
 
+  /*
+   * A radio is meaningless alone — exclusivity lives on the group, so every
+   * story is wrapped in one and selects by matching `value`.
+   */
+  decorators: [
+    (Story) => (
+      <RadioGroup defaultValue="selected">
+        <Story />
+      </RadioGroup>
+    ),
+  ],
+
   argTypes: {
-    disabled: {
-      control: "boolean",
+    value: {
+      control: "text",
     },
 
-    readOnly: {
+    disabled: {
       control: "boolean",
     },
 
@@ -37,28 +62,7 @@ const meta = {
       control: "boolean",
     },
 
-    defaultValue: {
-      control: false,
-      table: {
-        disable: true,
-      },
-    },
-
-    value: {
-      control: false,
-      table: {
-        disable: true,
-      },
-    },
-
-    onValueChange: {
-      control: false,
-      table: {
-        disable: true,
-      },
-    },
-
-    children: {
+    render: {
       control: false,
       table: {
         disable: true,
@@ -67,20 +71,11 @@ const meta = {
   },
 
   args: {
-    defaultValue: "icons",
+    value: "selected",
     disabled: false,
-    readOnly: false,
     required: false,
   },
-
-  render: (args) => (
-    <RadioGroup {...args} aria-label="View as" className="w-80">
-      <RadioGroupItem value="icons">Icons</RadioGroupItem>
-      <RadioGroupItem value="list">List</RadioGroupItem>
-      <RadioGroupItem value="columns">Columns</RadioGroupItem>
-    </RadioGroup>
-  ),
-} satisfies Meta<typeof RadioGroup>
+} satisfies Meta<typeof RadioGroupItem>
 
 export default meta
 
@@ -89,132 +84,176 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 /*
- * Idle — the first segment carries --selectable-control-segment-selected.
+ * Idle — --toggle-fill, the same flat Fills - Opaque/Primary the checkbox
+ * uses, with no stroke and no effect.
  *
- * The fill is one segment's own data-checked, not an indicator that slides
- * along the track, so what has to hold is that the old segment gives it up as
- * the new one takes it. Clicking back to Icons leaves the story on the state
- * it documents.
+ * A radio only latches: unlike a checkbox there is no second click that
+ * clears it, so the round trip a checkbox story does would not apply here.
  */
-export const Idle: Story = {
+export const Unselected: Story = {
+  args: {
+    value: "other",
+  },
+
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    const icons = canvas.getByRole("radio", { name: "Icons" })
-    const list = canvas.getByRole("radio", { name: "List" })
+    const radio = within(canvasElement).getByRole("radio")
 
-    await userEvent.click(list)
-    await expect(list).toBeChecked()
-    await expect(icons).not.toBeChecked()
+    await expect(radio).not.toBeChecked()
 
-    await userEvent.click(icons)
-    await expect(icons).toBeChecked()
-    await expect(list).not.toBeChecked()
+    await userEvent.click(radio)
+    await expect(radio).toBeChecked()
   },
 }
 
-/* A selection further along the track. */
-export const SelectedLast: Story = {
-  args: {
-    defaultValue: "columns",
+/* Selected — the circle fills with --macos-blue and the dot paints on top. */
+export const Selected: Story = {
+  play: async ({ canvasElement }) => {
+    const radio = within(canvasElement).getByRole("radio")
+
+    await expect(radio).toBeChecked()
+    await expect(
+      radio.querySelector("[data-slot=radio-group-indicator]")
+    ).toBeVisible()
   },
 }
 
 /*
- * The focus ring belongs to the track, not the segment — the group draws it
- * via has-[[data-slot=radio-group-item]:focus-visible]. Keyboard only.
+ * The dot only exists while selected — Base UI does not render the indicator
+ * otherwise, so an unselected ring is genuinely empty rather than hiding one.
  */
-export const Focused: Story = {
-  play: async ({ canvasElement }) => {
-    const selected = within(canvasElement).getByRole("radio", {
-      checked: true,
-    })
+export const UnselectedHasNoDot: Story = {
+  args: {
+    value: "other",
+  },
 
-    await userEvent.tab()
-    await expect(selected).toHaveFocus()
+  play: async ({ canvasElement }) => {
+    const radio = within(canvasElement).getByRole("radio")
+
+    await expect(radio.querySelector("[data-slot=radio-group-indicator]")).toBeNull()
   },
 }
 
-/* Disabled applies to the complete control, never to one segment. */
+/*
+ * Focus is `focus-visible`, so it only paints for the keyboard — a
+ * programmatic focus() would show nothing. Tab into it the way a user does.
+ */
+export const Focused: Story = {
+  play: async ({ canvasElement }) => {
+    const radio = within(canvasElement).getByRole("radio")
+
+    await userEvent.tab()
+    await expect(radio).toHaveFocus()
+  },
+}
+
+/*
+ * Disabled takes explicit colours rather than one opacity: the kit drops the
+ * ring to Fills - Opaque/Tertiary and the label to Labels/Tertiary, which is
+ * NSColor.disabledControlTextColor behaviour.
+ *
+ * Colour is only half of it — a dead macOS control is dead to the pointer too.
+ * user-event refuses to click through the disabled:pointer-events-none that
+ * enforces it, so the check is waived here to let the click actually land and
+ * show that nothing moves.
+ */
 export const Disabled: Story = {
+  args: {
+    value: "other",
+    disabled: true,
+  },
+
+  play: async ({ canvasElement }) => {
+    const radio = within(canvasElement).getByRole("radio")
+
+    await userEvent.click(radio, { pointerEventsCheck: 0 })
+    await expect(radio).not.toBeChecked()
+  },
+}
+
+export const DisabledSelected: Story = {
   args: {
     disabled: true,
   },
 }
 
+export const WithLabel: Story = {
+  render: (args) => (
+    <label className={labelClass}>
+      <RadioGroupItem {...args} />
+      Use the system accent colour
+    </label>
+  ),
+}
+
 /*
- * A single dead segment inside a live track. Base UI keeps the disabled radio
- * in the roving tabindex, so the arrow keys still pass over it.
+ * The shape a macOS settings pane actually uses — and the one place
+ * exclusivity is observable, since selecting one has to clear the other.
  */
-export const DisabledItem: Story = {
-  render: (args) => (
-    <RadioGroup {...args} aria-label="View as" className="w-80">
-      <RadioGroupItem value="icons">Icons</RadioGroupItem>
-      <RadioGroupItem value="list">List</RadioGroupItem>
-      <RadioGroupItem value="columns" disabled>
-        Columns
-      </RadioGroupItem>
-    </RadioGroup>
-  ),
-}
+export const Group: Story = {
+  decorators: [(Story) => <Story />],
 
-/* Two segments — each takes half the track, since items are flex-1. */
-export const TwoUp: Story = {
-  args: {
-    defaultValue: "light",
+  play: async ({ canvasElement }) => {
+    const [small, medium] = within(canvasElement).getAllByRole("radio")
+
+    await expect(small).toBeChecked()
+
+    await userEvent.click(medium)
+    await expect(medium).toBeChecked()
+    await expect(small).not.toBeChecked()
   },
 
-  render: (args) => (
-    <RadioGroup {...args} aria-label="Appearance" className="w-56">
-      <RadioGroupItem value="light">Light</RadioGroupItem>
-      <RadioGroupItem value="dark">Dark</RadioGroupItem>
-    </RadioGroup>
-  ),
-}
+  render: () => (
+    <RadioGroup defaultValue="small" className="gap-2">
+      <label className={labelClass}>
+        <RadioGroupItem value="small" />
+        Small icons
+      </label>
 
-/* Five segments — the point at which labels start fighting for width. */
-export const FiveUp: Story = {
-  args: {
-    defaultValue: "week",
-  },
+      <label className={labelClass}>
+        <RadioGroupItem value="medium" />
+        Medium icons
+      </label>
 
-  render: (args) => (
-    <RadioGroup {...args} aria-label="Range" className="w-96">
-      <RadioGroupItem value="day">Day</RadioGroupItem>
-      <RadioGroupItem value="week">Week</RadioGroupItem>
-      <RadioGroupItem value="month">Month</RadioGroupItem>
-      <RadioGroupItem value="quarter">Quarter</RadioGroupItem>
-      <RadioGroupItem value="year">Year</RadioGroupItem>
+      <label className={labelClass}>
+        <RadioGroupItem value="large" />
+        Large icons
+      </label>
+
+      <label className={labelClass}>
+        <RadioGroupItem value="huge" disabled />
+        Huge icons (unavailable)
+      </label>
     </RadioGroup>
   ),
 }
 
 export const AllStates: Story = {
+  decorators: [(Story) => <Story />],
+
   render: () => (
-    <div className="flex w-80 flex-col gap-3">
-      <RadioGroup defaultValue="icons" aria-label="Idle">
-        <RadioGroupItem value="icons">Icons</RadioGroupItem>
-        <RadioGroupItem value="list">List</RadioGroupItem>
-        <RadioGroupItem value="columns">Columns</RadioGroupItem>
+    <div className="flex flex-col gap-2">
+      <RadioGroup defaultValue="on" className="gap-2">
+        <label className={labelClass}>
+          <RadioGroupItem value="on" />
+          Selected
+        </label>
+
+        <label className={labelClass}>
+          <RadioGroupItem value="off" />
+          Unselected
+        </label>
       </RadioGroup>
 
-      <RadioGroup defaultValue="columns" aria-label="Selected last">
-        <RadioGroupItem value="icons">Icons</RadioGroupItem>
-        <RadioGroupItem value="list">List</RadioGroupItem>
-        <RadioGroupItem value="columns">Columns</RadioGroupItem>
-      </RadioGroup>
+      <RadioGroup defaultValue="on" className="gap-2">
+        <label className={labelClass}>
+          <RadioGroupItem value="on" disabled />
+          Disabled, selected
+        </label>
 
-      <RadioGroup defaultValue="icons" aria-label="One item disabled">
-        <RadioGroupItem value="icons">Icons</RadioGroupItem>
-        <RadioGroupItem value="list">List</RadioGroupItem>
-        <RadioGroupItem value="columns" disabled>
-          Columns
-        </RadioGroupItem>
-      </RadioGroup>
-
-      <RadioGroup defaultValue="icons" aria-label="Disabled" disabled>
-        <RadioGroupItem value="icons">Icons</RadioGroupItem>
-        <RadioGroupItem value="list">List</RadioGroupItem>
-        <RadioGroupItem value="columns">Columns</RadioGroupItem>
+        <label className={labelClass}>
+          <RadioGroupItem value="off" disabled />
+          Disabled
+        </label>
       </RadioGroup>
     </div>
   ),

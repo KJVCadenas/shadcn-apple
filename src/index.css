@@ -513,8 +513,8 @@
   --checkbox-radius: 5.5px;
 
   /* ============================================================
-     RADIO BUTTON — MEASURED. Adds a dot to TOGGLES; the radius
-     is simply round.
+     RADIO GROUP — MEASURED (Figma: Toggles - Radio Buttons).
+     Adds a dot to TOGGLES; the radius is simply round.
 
      The kit gives the radio a Mixed variant drawn with the same
      bar as the checkbox. It is not ported: Base UI's radio has no
@@ -522,7 +522,7 @@
      in a form. Add it if a real screen ever needs one.
      ============================================================ */
 
-  --radio-button-dot-size: 4.8px;
+  --radio-group-dot-size: 4.8px;
 
   /* ============================================================
      POPOVER SURFACE — DERIVED.

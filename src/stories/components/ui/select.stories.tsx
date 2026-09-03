@@ -4,7 +4,6 @@ import {
   screen,
   userEvent,
   waitFor,
-  waitForElementToBeRemoved,
   within,
 } from "storybook/test"
 
@@ -209,9 +208,11 @@ export const OpenByClick: Story = {
  * the popup is out of the tree by then and can no longer supply it.
  *
  * Base UI does not tear the menu down on close — it leaves the positioner in
- * place under a `hidden` attribute — so the removal is watched through a role
+ * place under a `hidden` attribute — so the close is watched through a role
  * query, which ignores hidden subtrees, rather than through an element handle
- * that would never go away.
+ * that would never go away. It is polled to null rather than passed to
+ * waitForElementToBeRemoved, because the click closes the menu before the
+ * assertion runs and that helper throws when the element is already gone.
  */
 export const Selects: Story = {
   args: {
@@ -230,7 +231,7 @@ export const Selects: Story = {
 
     await userEvent.click(screen.getByRole("option", { name: "Right" }))
 
-    await waitForElementToBeRemoved(() => screen.queryByRole("listbox"))
+    await waitFor(() => expect(screen.queryByRole("listbox")).toBeNull())
     await expect(trigger).toHaveTextContent("Right")
   },
 }

@@ -4,45 +4,27 @@ import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group"
 import { cn } from "@/lib/utils"
 
 /*
- * The macOS Selectable Control — a segmented picker, not a column of
- * dots. It shares every token with Tabs, because on macOS the two are
- * the same control wearing different semantics: Tabs switches a view,
- * this one sets a form value, and only the latter belongs in a Field.
+ * macOS: Toggles - Radio Buttons — a column of dots, and a different
+ * control from the segmented picker in toggle-group.tsx. The kit ships
+ * them as two components, so this repo does too.
  *
- * The stock dot variant is not ported. Nothing in the app uses one;
- * add it here when something does.
+ * Everything but the round radius and the dot comes from the shared
+ * TOGGLES block, which the checkbox draws from as well.
  */
 
 function RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {
   return (
     <RadioGroupPrimitive
       data-slot="radio-group"
-      data-variant="segmented"
       className={cn(
         [
-          "group/radio-group",
-          "relative isolate inline-flex shrink-0",
-          "items-center justify-center",
+          /*
+           * Semantics and stacking only. The kit's node is a single row,
+           * so the space between rows is unmeasured and left to the
+           * caller rather than guessed at.
+           */
+          "flex flex-col items-start",
           "outline-none",
-
-          /* Track */
-          "h-(--selectable-control-height)",
-          "w-full",
-          "gap-(--selectable-control-track-gap)",
-          "rounded-(--selectable-control-track-radius)",
-          "bg-(--selectable-control-track)",
-          "p-(--selectable-control-track-padding)",
-
-          /* Pressed track */
-          "has-[[data-slot=radio-group-item]:active]:bg-(--selectable-control-track-pressed)",
-
-          /* Focus ring belongs to the track, not the segment. */
-          "has-[[data-slot=radio-group-item]:focus-visible]:ring-(length:--selectable-control-focus-ring-width)",
-          "has-[[data-slot=radio-group-item]:focus-visible]:ring-(--selectable-control-focus-ring)",
-
-          /* Disabled applies to the complete control, not each segment. */
-          "data-disabled:pointer-events-none",
-          "data-disabled:opacity-(--selectable-control-disabled-opacity)",
         ],
         className
       )}
@@ -57,44 +39,62 @@ function RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {
       data-slot="radio-group-item"
       className={cn(
         [
-          "relative z-10",
-          "inline-flex min-w-0 flex-1",
-          "items-center justify-center",
-          "appearance-none border-0",
+          "peer relative shrink-0",
+          "inline-flex items-center justify-center",
+          "appearance-none border-0 outline-none",
 
-          /* Segment geometry */
-          "h-(--selectable-control-segment-height)",
-          "rounded-(--selectable-control-segment-radius)",
-          "px-(--selectable-control-segment-padding-x)",
-          "py-(--selectable-control-segment-padding-y)",
+          /*
+           * The same 16px box as the checkbox; only the radius differs,
+           * and at this size that is simply a circle.
+           */
+          "size-(--toggle-size)",
+          "rounded-full",
 
-          /* Typography */
-          "font-sans",
-          "text-(length:--selectable-control-font-size)",
-          "leading-(--selectable-control-line-height)",
-          "font-(--selectable-control-font-weight)",
-          "whitespace-nowrap",
+          /* Idle. A flat fill, no stroke and no effect. */
+          "bg-(--toggle-fill)",
 
-          /* Unselected */
-          "bg-transparent",
-          "text-(--selectable-control-label)",
+          /* Selected fills with the accent and the dot rides on top. */
+          "data-checked:bg-(--macos-blue)",
+          "text-(--toggle-glyph)",
 
-          /* Interaction */
-          "cursor-default select-none outline-none",
-          "hover:text-(--selectable-control-label-selected)",
+          /*
+           * Clicked, in the kit's vocabulary. An empty ring darkens its
+           * own fill; a filled one darkens the accent.
+           */
+          "data-unchecked:active:bg-(--toggle-fill-pressed)",
+          "data-checked:active:bg-(--toggle-accent-pressed)",
 
-          /* Selected — no weight shift and no decorative shadow */
-          "data-checked:bg-(--selectable-control-segment-selected)",
-          "data-checked:text-(--selectable-control-label-selected)",
+          /* Desktop cursor behavior */
+          "cursor-default select-none",
 
-          /* Disabled */
+          /* Accessibility */
+          "focus-visible:ring-(length:--toggle-focus-ring-width)",
+          "focus-visible:ring-(--toggle-focus-ring)",
+
+          /*
+           * Disabled. macOS keeps the control legible rather than fading
+           * it as a unit: the box takes explicit colours and the dot
+           * drops to half, which is why opacity stays at 100.
+           */
           "disabled:pointer-events-none",
-          "disabled:opacity-(--selectable-control-disabled-opacity)",
+          "disabled:opacity-100",
+          "disabled:text-(--toggle-glyph-disabled)",
+          "data-unchecked:disabled:bg-(--toggle-fill-disabled)",
+          "data-checked:disabled:bg-(--toggle-accent-disabled)",
         ],
         className
       )}
       {...props}
-    />
+    >
+      <RadioPrimitive.Indicator
+        data-slot="radio-group-indicator"
+        className={cn(
+          "pointer-events-none shrink-0",
+          "rounded-full bg-current",
+          "size-(--radio-group-dot-size)"
+        )}
+      />
+    </RadioPrimitive.Root>
   )
 }
 
