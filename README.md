@@ -1,13 +1,55 @@
-# ShadCN - Apple Design System
+# shadcn/ui, restyled as macOS
 
-# Components
+A [shadcn/ui](https://ui.shadcn.com) component set restyled so it reads as
+**native macOS**, not as a web app — the same heights, radii, type ramp, label
+opacities and state transitions as Apple's real controls.
 
-**Status**
+**[→ Browse the components in Storybook](https://kjvcadenas.github.io/shadcn-apple/)**
+
+> **This is in progress and public on purpose.** Roughly a third of the roadmap
+> below is built. Blank rows are not started, and the gaps are documented rather
+> than papered over — see [Status](#status) and [Known gaps](#known-gaps).
+
+## What makes it different
+
+- **No glass.** No `backdrop-filter`, no vibrancy, no translucency-over-desktop.
+  Liquid Glass is explicitly out of scope. Where Apple uses a material, it is
+  reproduced as a *static* color.
+- **No invented numbers.** If the real macOS value for a height, inset or radius
+  hasn't been confirmed, it isn't guessed. `button.tsx` leaves `size.xs`, `sm`
+  and `lg` as empty strings with a comment saying they're compatibility aliases
+  awaiting real specs. Every number in `src/index.css` carries a
+  [confidence tag](#confidence-tiers) saying where it came from.
+- **Tokens only.** Components never hardcode a color or a dimension. A raw hex
+  or a `px` literal inside a `.tsx` file is treated as a bug.
+- **Base UI, not Radix.** Primitives come from `@base-ui/react/*`.
+- **Drop-in shadcn API.** Variant and size names stay compatible even where
+  macOS has no equivalent, so components remain swappable.
+
+## Confidence tiers
+
+Every token banner in `src/index.css` opens with one of four tags, and a
+component inherits its banner's tag. A number only moves up this ladder when
+someone does the work that earns the new tier.
+
+| Tag | Means | Earned by |
+|---|---|---|
+| `MEASURED` | Read off a Figma reference or a screenshot of the real control | Someone measured it |
+| `DOCUMENTED` | Apple published this exact number (AppKit API, HIG with a figure) | Citing the page or symbol |
+| `DERIVED` | Reasoned from a `MEASURED` value already in the file, or from a stated macOS convention | Naming what it was derived *from* |
+| `IMPORTED` | Carried in from another project or a generated mockup; never checked against macOS | Nothing — this is the "unverified" tier |
+
+`IMPORTED` is not a resting place: a block carrying it must also name the values
+to re-measure first. `DERIVED` blocks that can never be measured (macOS ships no
+such control) state an exit condition instead — the `DATE PICKER` banner in
+`src/index.css` is the worked example of both.
+
+## Status
 
 - `Done` — restyled against a macOS reference, tokenised, has a Storybook story.
 - `Imported` — builds, is tokenised and has a Storybook story, but the numbers
   came from another project's mockups rather than a macOS reference. See the
-  confidence tiers in `CLAUDE.md`; the token banner in `index.css` says what to
+  confidence tiers above; the token banner in `index.css` says what to
   re-measure first. A story is necessary for `Done`, not sufficient — `Done`
   also wants a macOS reference behind the numbers.
 - `Stock` — the file exists and is wired to Base UI, but it is still stock
@@ -44,6 +86,40 @@
 | **P2**   | `Badge`                      | Label/status treatment                   |        |
 | **P2**   | `Accordion` / `Collapsible`  | DisclosureGroup                          |        |
 
+## Running it locally
+
+```bash
+pnpm install
+pnpm storybook        # the actual workbench — port 6006
+```
+
+Storybook is where the work happens: one named story per macOS state, so the
+whole state matrix is visible at a glance. The toolbar theme switcher toggles
+the `.dark` class, and the a11y panel runs on every story.
+
+```bash
+pnpm dev              # scratch page at src/App.tsx — not the point
+pnpm lint             # oxlint (not eslint)
+pnpm build            # tsc -b && vite build
+pnpm test             # vitest, runs the stories
+```
+
+## How it's put together
+
+`src/index.css` holds five token layers, each built from the one above — raw
+accents, Apple's label/fill opacity ladder, surfaces, shadcn aliases, then
+per-component tokens. Components pull from layer 5 and never hardcode.
+
+```
+src/
+  components/ui/    the components — button.tsx and input.tsx are the references
+  stories/          one story file per component, one export per macOS state
+  index.css         every token, every confidence banner
+```
+
+`CLAUDE.md` carries the full conventions: how to add a component, how to import
+one from another project, and the rules the token architecture has to hold to.
+
 ## Known gaps
 
 - **The checkbox focus ring cannot come from Figma.** The kit's `State` enum is
@@ -60,9 +136,7 @@
   `NSView.prefersCompactControlSizeMetrics` exists to restore the old ones), so
   a `MEASURED` tag without an OS version is half a provenance. This affects
   every geometry token in `src/index.css`, not just the checkbox. See
-  `.claude/research/macos-checkbox.md`.
-
-[t]: https://developer.apple.com/videos/play/wwdc2025/310/
+  [`docs/macos-checkbox.md`](docs/macos-checkbox.md).
 - **`PopoverContent` carries no padding by design.** The surface draws chrome
   only, so content owns its inset — `Calendar` brings
   `--date-picker-popup-padding`, and plain content must bring its own. Add a
@@ -73,3 +147,9 @@
   `src/index.css`.
 - **The dark menu shadow is unmeasured.** `--select-popup-shadow` inherits its
   light value in `.dark` — a known gap, not a decision.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+[t]: https://developer.apple.com/videos/play/wwdc2025/310/
