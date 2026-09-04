@@ -26,6 +26,25 @@ opacities and state transitions as Apple's real controls.
 - **Drop-in shadcn API.** Variant and size names stay compatible even where
   macOS has no equivalent, so components remain swappable.
 
+## Fonts and platform accuracy
+
+**This is a 1:1 macOS match only when viewed on macOS.** The components ask for
+the system font — SF — and get it on macOS. On Windows and Linux there is no SF
+to resolve, so `system-ui` hands back Segoe UI or the distro's system font
+instead. Geometry survives that swap intact, because every height, radius and
+inset is a px token rather than something the type drives; what shifts is
+x-height, advance width and optical weight, so labels read a little heavier and
+wider and vertical centering inside a 24px control looks slightly off. Nothing
+breaks — but a Windows viewer comparing a screenshot here against a real macOS
+control is comparing two different typefaces.
+
+SF Pro is deliberately not bundled. Apple licenses it for designing and
+developing for Apple platforms, which does not extend to self-hosting it on a
+public site, and substituting a lookalike such as Inter would make the Storybook
+render consistently while quietly misrepresenting the design — the opposite of
+what the [confidence tiers](#confidence-tiers) are for. The stack resolves SF
+where it already exists and asks for nothing where it does not.
+
 ## Confidence tiers
 
 Every token banner in `src/index.css` opens with one of four tags, and a

@@ -28,6 +28,41 @@ function docsTheme(dark: boolean) {
   })
 }
 
+/*
+ * The type ramp resolves to SF only on macOS; everywhere else `system-ui`
+ * hands back Segoe UI or the distro's system font. Token-driven geometry
+ * survives that swap, the typeface does not — so a non-macOS viewer is told
+ * once, here, rather than left to read the docs as a 1:1 match. macOS
+ * viewers, the primary audience, never see it.
+ */
+function FontNotice() {
+  const nonApple =
+    typeof navigator !== "undefined" && !/Mac/i.test(navigator.userAgent)
+
+  if (!nonApple) return null
+
+  return (
+    <div
+      style={{
+        margin: "0 0 24px",
+        padding: "12px 14px",
+        borderRadius: "var(--radius-md)",
+        background: "var(--fill-secondary)",
+        color: "var(--label-secondary)",
+        font: "var(--font-size-body) / var(--line-height-body) var(--font-system)",
+      }}
+    >
+      <strong style={{ color: "var(--label-primary)", fontWeight: 590 }}>
+        You are not on macOS, so the type below is not SF.
+      </strong>{" "}
+      Heights, radii and insets are px tokens and render exactly as specified
+      here, but your system font is standing in for SF — labels sit a little
+      wider and heavier than the real control. SF Pro is not bundled because
+      Apple&rsquo;s license does not cover self-hosting it.
+    </div>
+  )
+}
+
 function ThemedDocsContainer({
   children,
   ...props
@@ -48,6 +83,7 @@ function ThemedDocsContainer({
 
   return (
     <DocsContainer {...props} theme={docsTheme(dark)}>
+      <FontNotice />
       {children}
     </DocsContainer>
   )
